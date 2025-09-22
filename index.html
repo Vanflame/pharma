@@ -493,7 +493,7 @@
                     p.stock !== undefined ? (p.stock === 0 ? 'Out of stock' : `Stock: ${p.stock}`) : 'Stock info unavailable';
 
                 const card = document.createElement("a");
-                card.href = `/product/?id=${doc.id}`;
+                card.href = `./product/index.html?id=${doc.id}`;
                 card.className = `block rounded-xl border hover:shadow transition overflow-hidden ${isOutOfStock ? 'opacity-60 grayscale' : ''}`;
 
                 const imageURL = p.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop';

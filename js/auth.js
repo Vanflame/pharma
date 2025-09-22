@@ -95,8 +95,19 @@ function getRedirectBasePath() {
 export function redirectByRole(role) {
     const basePath = getRedirectBasePath();
     
-    // Redirect all users to landing page after successful login/register
-    window.location.href = basePath || "./";
+    // Redirect based on user role
+    switch (role) {
+        case 'admin':
+            window.location.href = `${basePath}admin/`;
+            break;
+        case 'pharmacy':
+            window.location.href = `${basePath}pharmacy/`;
+            break;
+        case 'user':
+        default:
+            window.location.href = basePath || "./";
+            break;
+    }
 }
 
 export function watchAuthAndRedirect() {

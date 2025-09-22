@@ -667,6 +667,14 @@ service cloud.firestore {
 npx serve -l 5173
 ```
 
+### **GitHub Pages Deployment**
+1. Push code to GitHub repository
+2. Enable GitHub Pages in repository settings
+3. The `404.html` file will handle routing automatically
+4. Access via: `https://yourusername.github.io/repository-name/`
+
+**Note**: GitHub Pages doesn't support server-side routing, so the `404.html` file redirects folder-based URLs to the correct `index.html` files.
+
 ### **Admin Account Setup**
 1. Register a normal account via Register page
 2. In Firebase Console, set `role` field to `admin` in users collection

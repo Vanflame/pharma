@@ -1,0 +1,251 @@
+/* Tailwind is included via CDN; this file is for small custom tweaks */
+
+:root {
+    --brand-green: #10b981;
+    /* emerald-500 */
+    --brand-blue: #3b82f6;
+    /* blue-500 */
+}
+
+/* Hide number input spinners for better UI */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-emerald-50 text-emerald-700;
+}
+
+.stage-Pending {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.stage-Confirmed {
+    @apply bg-blue-100 text-blue-800;
+}
+
+.stage-To\ Be\ Received {
+    @apply bg-indigo-100 text-indigo-800;
+}
+
+.stage-Delivered {
+    @apply bg-emerald-100 text-emerald-800;
+}
+
+.container-max {
+    max-width: 1200px;
+}
+
+.dropdown-item {
+    @apply block py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200;
+    padding-left: 1.25rem;
+    /* create comfortable left gutter */
+    padding-right: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    /* left align content */
+    text-align: left;
+    gap: 0.625rem;
+    min-height: 44px;
+    border-bottom: 1px solid #f1f5f9;
+    font-weight: 500;
+    position: relative;
+}
+
+.dropdown-item:hover {
+    @apply bg-gray-50 text-gray-900;
+    transform: translateX(2px);
+}
+
+.dropdown-item:active {
+    @apply bg-gray-100;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.dropdown-item:first-of-type {
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.dropdown-item svg {
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+    /* comfortable space between icon and text */
+    margin-left: 0.125rem;
+    /* keeps icon off extreme left edge */
+    margin-bottom: 0;
+    width: 1.125rem;
+    height: 1.125rem;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.dropdown-item:hover svg {
+    color: #374151;
+}
+
+.dropdown-panel {
+    position: absolute !important;
+    top: calc(100% + 0.5rem) !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    margin-top: 0.5rem;
+    width: 20rem;
+    min-width: 20rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    box-shadow: 0 12px 20px -4px rgba(2, 6, 23, 0.18), 0 4px 8px -4px rgba(2, 6, 23, 0.08);
+    z-index: 50;
+    display: none;
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+/* Mobile dropdown positioning */
+@media (max-width: 768px) {
+    .dropdown-panel {
+        right: 0.5rem !important;
+        left: 0.5rem !important;
+        width: auto !important;
+        min-width: auto !important;
+    }
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-panel:not(.hidden) {
+    display: block;
+}
+
+.dropdown-panel.hidden {
+    display: none !important;
+}
+
+/* Prevent layout shift */
+.relative {
+    position: relative;
+}
+
+/* Tab styles */
+.tab-button {
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.tab-button:hover {
+    background-color: #f9fafb;
+}
+
+.tab-button.active {
+    background-color: #f0fdf4;
+}
+
+/* Pharmacy and Admin tab styles */
+.pharmacy-tab-button,
+.admin-tab-button {
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.pharmacy-tab-button:hover,
+.admin-tab-button:hover {
+    background-color: #f9fafb;
+    z-index: 2;
+}
+
+.pharmacy-tab-button.active,
+.admin-tab-button.active {
+    background-color: #f0fdf4;
+    z-index: 2;
+}
+
+/* Badge positioning to prevent overlay */
+.pharmacy-order-count-badge,
+.admin-order-count-badge {
+    z-index: 10;
+    pointer-events: none;
+    right: 8px;
+    top: 8px;
+}
+
+/* Order card hover effects */
+#orders>div {
+    transition: all 0.2s ease;
+}
+
+#orders>div:hover {
+    transform: translateY(-1px);
+}
+
+/* User info section in dropdown */
+.dropdown-panel .user-info {
+    @apply px-4 py-3.5 border-b border-gray-200;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 0.75rem 0.75rem 0 0;
+    text-align: center;
+}
+
+.dropdown-panel .user-info p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.dropdown-panel .user-info .user-email {
+    @apply text-sm font-medium text-gray-900;
+    max-width: 100%;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.25rem;
+}
+
+.dropdown-panel .user-info .user-role {
+    @apply text-xs text-gray-500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+/* Ensure nav doesn't expand */
+nav {
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+#account-area {
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+/* Ensure header container doesn't expand */
+header .container-max {
+    overflow: visible;
+}

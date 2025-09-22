@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — PHARMA DIRECT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-gray-50">
+    <div class="min-h-screen grid place-items-center px-4">
+        <div class="w-full max-w-md bg-white rounded-2xl p-6 shadow">
+            <a href="../" class="text-sm text-gray-500">← Back to Home</a>
+            <h1 class="mt-2 text-2xl font-semibold">Welcome back</h1>
+            <p class="text-gray-600">Sign in to continue</p>
+            <form id="login-form" class="mt-6 space-y-4">
+                <div>
+                    <label class="text-sm">Email</label>
+                    <input name="email" type="email" required class="mt-1 w-full rounded-lg border px-3 py-2" />
+                </div>
+                <div>
+                    <label class="text-sm">Password</label>
+                    <input name="password" type="password" required minlength="6"
+                        class="mt-1 w-full rounded-lg border px-3 py-2" />
+                </div>
+                <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2">Sign in</button>
+            </form>
+            <p class="mt-4 text-sm text-gray-600">No account? <a href="../register/"
+                    class="text-emerald-700">Register</a></p>
+            <div id="error" class="mt-3 text-sm text-red-600 hidden"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { firebaseConfig, showError, showSuccess, setButtonLoading } from '../js/firebase.js';
+        import { loginUser, fetchUserRole, redirectByRole } from '../js/auth.js';
+
+        // Redirect if already authenticated (auth or persisted)
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const persistedUid = localStorage.getItem('uid');
+        const persistedRole = localStorage.getItem('role');
+        if (persistedUid && persistedRole) {
+            redirectByRole(persistedRole);
+        }
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const role = persistedRole || await fetchUserRole(user.uid);
+                redirectByRole(role);
+            }
+        });
+
+        const form = document.getElementById('login-form');
+        const err = document.getElementById('error');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        console.log('Form found:', form);
+        console.log('Submit button found:', submitBtn);
+        
+        // Test button click
+        submitBtn.addEventListener('click', () => {
+            console.log('Button clicked!');
+        });
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            err.classList.add('hidden');
+            
+            console.log('Submit button found:', submitBtn);
+            console.log('Button element:', submitBtn);
+            console.log('Button text before:', submitBtn?.textContent);
+            
+            // Set loading state
+            setButtonLoading(submitBtn, true, 'Signing in...');
+            
+            console.log('Button text after:', submitBtn?.textContent);
+            console.log('Button disabled:', submitBtn?.disabled);
+            
+            const data = Object.fromEntries(new FormData(form).entries());
+            try {
+                const user = await loginUser({ email: data.email, password: data.password });
+                const role = await fetchUserRole(user.uid);
+                
+                // Show success state briefly before redirect
+                setButtonLoading(submitBtn, true, 'Success! Redirecting...');
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+                
+                redirectByRole(role);
+            } catch (error) {
+                showError(error, 'error');
+                setButtonLoading(submitBtn, false);
+            }
+        });
+    </script>
+</body>
+
+</html>

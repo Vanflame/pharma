@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHARMA DIRECT — OTC Medicine Delivery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-white text-gray-900"
+    style="font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif;">
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2 flex-shrink-0">
+                <img src="img/icon.png" alt="logo" class="w-6 h-6" />
+                <span class="font-semibold text-lg hidden sm:block">PHARMA DIRECT</span>
+                <span class="font-semibold text-lg sm:hidden">PHARMA</span>
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center bg-white border border-gray-200">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="categories/" class="text-gray-600 hover:text-gray-900">Categories</a>
+                <a href="track/" class="text-gray-600 hover:text-gray-900">Track Order</a>
+                <a href="cart/"
+                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 text-white px-4 py-2 shadow hover:bg-emerald-700">Cart
+                    <span id="cart-count"
+                        class="ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white text-emerald-700 text-xs">0</span>
+                </a>
+                <a id="login-link" href="login/" class="text-gray-600 hover:text-gray-900">Login</a>
+                <div id="account-area" class="relative hidden">
+                    <button id="account-btn"
+                        class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span id="account-name" class="text-sm font-medium truncate max-w-24"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="account-menu" class="dropdown-panel hidden">
+                        <div class="user-info">
+                            <p class="user-email" id="account-email"></p>
+                            <p class="user-role" id="account-role"></p>
+                        </div>
+                        <a id="dashboard-link" href="#" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="track/" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                </path>
+                            </svg>
+                            <span>My Orders</span>
+                        </a>
+                        <button id="logout-btn" class="dropdown-item w-full text-left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="lg:hidden hidden fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300"></div>
+    
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="lg:hidden hidden fixed top-0 right-0 h-screen w-80 max-w-sm bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 flex flex-col">
+            <!-- Mobile Menu Header -->
+            <div class="flex items-center justify-between p-6 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white">
+                <div class="flex items-center gap-3">
+                    <img src="img/icon.png" alt="logo" class="w-8 h-8" />
+                <div>
+                        <h2 class="font-bold text-lg">PHARMA DIRECT</h2>
+                        <p class="text-emerald-100 text-sm">Your Health Partner</p>
+                    </div>
+                </div>
+                <button id="mobile-menu-close" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Content -->
+            <div class="flex flex-col flex-1 min-h-0">
+                <!-- User Info Section -->
+                <div id="mobile-account-section" class="p-6 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-lg text-gray-900" id="mobile-account-name">Loading...</p>
+                            <p class="text-sm text-gray-500" id="mobile-account-email">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="flex-1 overflow-y-auto min-h-0">
+                    <nav class="p-6 space-y-2">
+                        <!-- Primary Navigation -->
+                        <div class="space-y-2">
+                            <!-- Home -->
+                            <a href="./" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 group bg-emerald-50 text-emerald-700">
+                                <div class="w-10 h-10 bg-emerald-100 group-hover:bg-emerald-200 rounded-xl flex items-center justify-center transition-colors">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-medium text-emerald-700">Home</span>
+                            </a>
+                            
+                            <!-- Categories -->
+                            <a href="categories/" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 group">
+                                <div class="w-10 h-10 bg-blue-100 group-hover:bg-blue-200 rounded-xl flex items-center justify-center transition-colors">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-medium text-gray-700 group-hover:text-blue-700">Categories</span>
+                            </a>
+                            
+                            <!-- Track Order -->
+                            <a href="track/" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-purple-50 hover:text-purple-700 transition-all duration-200 group">
+                                <div class="w-10 h-10 bg-purple-100 group-hover:bg-purple-200 rounded-xl flex items-center justify-center transition-colors">
+                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-medium text-gray-700 group-hover:text-purple-700">Track Order</span>
+                            </a>
+                            
+                            <!-- Cart -->
+                            <a href="cart/" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-green-50 hover:text-green-700 transition-all duration-200 group">
+                                <div class="w-10 h-10 bg-green-100 group-hover:bg-green-200 rounded-xl flex items-center justify-center transition-colors">
+                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 flex items-center justify-between">
+                                    <span class="font-medium text-gray-700 group-hover:text-green-700">Cart</span>
+                                    <span id="mobile-cart-count" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold">0</span>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Divider -->
+                        <div class="my-4 border-t border-gray-200"></div>
+                        
+                        <!-- Account Section -->
+                        <div class="space-y-2">
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-4">Account</p>
+                            
+                            <!-- Dashboard (for logged-in users) -->
+                            <a id="mobile-dashboard-link" href="user-dashboard/" class="hidden flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-indigo-50 hover:text-indigo-700 transition-all duration-200 group">
+                                <div class="w-10 h-10 bg-indigo-100 group-hover:bg-indigo-200 rounded-xl flex items-center justify-center transition-colors">
+                                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-medium text-gray-700 group-hover:text-indigo-700">Dashboard</span>
+                            </a>
+                            
+                            <!-- Manage Address (for logged-in users) -->
+                            <a id="mobile-address-link" href="addresses/" class="hidden flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-purple-50 hover:text-purple-700 transition-all duration-200 group">
+                                <div class="w-10 h-10 bg-purple-100 group-hover:bg-purple-200 rounded-xl flex items-center justify-center transition-colors">
+                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-medium text-gray-700 group-hover:text-purple-700">Manage Address</span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+                
+                <!-- Bottom Actions -->
+                <div class="p-6 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+                    <!-- Login Button (for non-logged-in users) -->
+                    <a id="mobile-login-section" href="login/" class="flex items-center justify-center gap-3 w-full px-4 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Login / Register</span>
+                    </a>
+                    
+                    <!-- Logout Button (for logged-in users) -->
+                    <button id="mobile-logout-btn" class="flex items-center justify-center gap-3 w-full px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-medium" style="display: flex !important;">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <main class="pb-24">
+        <!-- Hero Banner -->
+        <section class="bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white">
+            <div class="mx-auto container-max px-4 py-12 sm:py-16 lg:py-20">
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div class="text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 bg-white bg-opacity-20 rounded-full px-4 py-2 mb-6">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-sm font-medium">Trusted & Reliable</span>
+                        </div>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-6">
+                            Fast, Safe, and Reliable 
+                            <span class="text-emerald-200">OTC Medicine</span> 
+                            Delivery
+                        </h1>
+                        <p class="text-lg sm:text-xl text-emerald-100 mb-8 leading-relaxed">
+                            Order from trusted pharmacies. Pay via COD, Card, GCash, or PayMaya. 
+                            Track your order in real-time with our advanced system.
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <a href="categories/"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white text-emerald-700 px-8 py-4 font-bold text-lg shadow-2xl hover:bg-emerald-50 transition-all duration-300 hover:scale-105">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5"></path>
+                                </svg>
+                                Shop Now
+                            </a>
+                        <a id="hero-signin" href="login/"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white text-white px-8 py-4 font-bold text-lg hover:bg-white hover:text-emerald-700 transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                </svg>
+                                Sign In
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex justify-center lg:justify-end">
+                        <div class="relative">
+                            <div class="w-80 h-80 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <div class="w-64 h-64 bg-white bg-opacity-30 rounded-full flex items-center justify-center">
+                                    <svg class="w-32 h-32 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <!-- Floating elements -->
+                            <div class="absolute -top-4 -right-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center animate-pulse">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="bg-white py-16 sm:py-20">
+            <div class="mx-auto container-max px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose Pharma Direct?</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">We provide the best pharmaceutical services with modern technology and trusted partnerships</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 hover:shadow-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Fast Delivery</h3>
+                        <p class="text-gray-600">Get your medicines delivered within 24-48 hours with our efficient delivery network</p>
+                    </div>
+                    <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 hover:shadow-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Safe & Secure</h3>
+                        <p class="text-gray-600">All medicines are sourced from licensed pharmacies and stored in proper conditions</p>
+                    </div>
+                    <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 hover:shadow-lg transition-all duration-300">
+                        <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Real-time Tracking</h3>
+                        <p class="text-gray-600">Track your order from pharmacy to your doorstep with our advanced tracking system</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section id="products" class="bg-gray-50 py-16 sm:py-20">
+            <div class="mx-auto container-max px-4">
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                                </svg>
+                                Featured Products
+                            </h2>
+                            <a href="categories/" class="text-white hover:text-emerald-200 font-medium flex items-center gap-2 transition-colors">
+                                <span>Browse all</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                            <div class="col-span-full text-center py-12">
+                                <div class="flex items-center justify-center py-8">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">Loading featured products...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile bottom nav -->
+    <nav class="fixed bottom-0 inset-x-0 md:hidden bg-white border-t shadow-lg">
+        <div class="mx-auto container-max px-4 py-3 grid grid-cols-4 text-xs">
+            <a href="./" class="flex flex-col items-center text-emerald-700 gap-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="font-medium">Home</span>
+            </a>
+            <a href="categories/" class="flex flex-col items-center text-gray-600 gap-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+                <span class="font-medium">Categories</span>
+            </a>
+            <a href="track/" class="flex flex-col items-center text-gray-600 gap-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <span class="font-medium">Track</span>
+            </a>
+            <a href="cart/" class="flex flex-col items-center text-gray-600 gap-1 relative">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5"></path>
+                </svg>
+                <span class="font-medium">Cart</span>
+                <span id="bottom-cart-count" class="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-600 text-white text-xs font-bold">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="js/imageCache.js"></script>
+    <script src="js/loading.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from "./js/firebase.js";
+        import { fetchUserRole, logout } from "./js/auth.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Update cart count from localStorage
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+            const count = cart.reduce((sum, i) => sum + i.quantity, 0);
+            const el = document.getElementById("cart-count");
+            const bottomEl = document.getElementById("bottom-cart-count");
+            const mobileEl = document.getElementById("mobile-cart-count");
+            if (el) el.textContent = String(count);
+            if (bottomEl) bottomEl.textContent = String(count);
+            if (mobileEl) mobileEl.textContent = String(count);
+        }
+        updateCartCount();
+
+        // Image preloading and caching
+        const imageCache = new Map();
+        const preloadedImages = new Set();
+
+        function preloadImage(src) {
+            if (preloadedImages.has(src)) return Promise.resolve();
+            
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    preloadedImages.add(src);
+                    imageCache.set(src, img);
+                    resolve(img);
+                };
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
+
+        function preloadProductImages(products) {
+            const imagePromises = products.map(product => {
+                const imageURL = product.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop';
+                return preloadImage(imageURL).catch(() => {
+                    console.warn(`Failed to preload image: ${imageURL}`);
+                });
+            });
+            
+            return Promise.allSettled(imagePromises);
+        }
+
+        // Load featured products
+        async function loadProducts() {
+            const grid = document.getElementById("product-grid");
+            
+            // Show loading
+            window.loadingManager.show('Loading featured products...');
+            
+            // Show simple loading message
+            grid.innerHTML = '<div class="col-span-full text-center py-12"><div class="text-gray-500">Loading products...</div></div>';
+            
+            const qRef = query(collection(db, COLLECTIONS.products), where("featured", "==", true), limit(8));
+            const snap = await getDocs(qRef);
+            if (snap.empty) {
+                grid.innerHTML = `<div class='col-span-full text-gray-500'>No featured products yet.</div>`;
+                window.loadingManager.hide();
+                return;
+            }
+            
+            // Preload images in the background using global cache
+            const products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            window.globalImageCache.preloadProductImages(products);
+            
+            // Save products to localStorage for cross-page caching
+            localStorage.setItem('homeProductsCache', JSON.stringify(products));
+            
+            // Clear skeleton loading and prepare for actual products
+            grid.innerHTML = '';
+            
+            snap.forEach(doc => {
+                const p = doc.data();
+                const isOutOfStock = (p.stock || 0) === 0 || p.disabled === true;
+                const stockText = p.disabled ? 'Currently unavailable' :
+                    p.stock !== undefined ? (p.stock === 0 ? 'Out of stock' : `Stock: ${p.stock}`) : 'Stock info unavailable';
+
+                const card = document.createElement("a");
+                card.href = `/product/?id=${doc.id}`;
+                card.className = `block rounded-xl border hover:shadow transition overflow-hidden ${isOutOfStock ? 'opacity-60 grayscale' : ''}`;
+
+                const imageURL = p.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop';
+
+                card.innerHTML = `
+              <div class="relative">
+                <div class="w-full h-40 bg-gray-100 flex items-center justify-center relative">
+                  <img src="${imageURL}" 
+                       alt="${p.name}" 
+                       class="w-full h-40 object-cover transition-opacity duration-300" 
+                       loading="eager" />
+                </div>
+                ${isOutOfStock ? '<div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><span class="text-white font-bold text-lg">SOLD OUT</span></div>' : ''}
+                ${p.featured ? '<div class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Featured</div>' : ''}
+              </div>
+              <div class="p-3">
+                <div class="text-sm text-gray-500">${p.category || 'OTC'}</div>
+                <div class="font-semibold ${isOutOfStock ? 'text-gray-500' : ''}">${p.name}</div>
+                <div class="mt-1 ${isOutOfStock ? 'text-gray-500' : 'text-emerald-700'}" data-price="${p.price || 0}">
+                    ${p.discount > 0 ? `
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold">${formatCurrency((p.price || 0) * (1 - (p.discount || 0) / 100))}</span>
+                            <span class="text-sm text-gray-500 line-through">${formatCurrency(p.price || 0)}</span>
+                            <span class="bg-red-100 text-red-800 text-xs px-1 py-0.5 rounded">${p.discount}% OFF</span>
+                        </div>
+                    ` : `
+                        ${formatCurrency(p.price || 0)}
+                    `}
+                </div>
+                <div class="mt-2 text-xs ${isOutOfStock ? 'text-red-500' : 'text-gray-600'}">${isOutOfStock ? 'Out of Stock' : stockText}</div>
+                <button data-id="${doc.id}"
+                        ${isOutOfStock ? 'disabled' : ''}
+                        class="mt-3 w-full inline-flex justify-center items-center rounded-lg px-3 py-2 ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
+                  ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                </button>
+              </div>`;
+
+                grid.appendChild(card);
+            });
+
+            grid.addEventListener("click", (e) => {
+                const target = e.target;
+                if (target.tagName === "BUTTON" && target.dataset.id) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Check if button is disabled (out of stock)
+                    if (target.disabled) {
+                        return;
+                    }
+
+                    const id = target.dataset.id;
+
+                    // Find the product data from the loaded products
+                    const product = Array.from(snap.docs).find(doc => doc.id === id)?.data();
+                    if (!product) {
+                        return;
+                    }
+
+                    const name = product.name;
+                    const discountedPrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+                    const imageURL = product.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop';
+
+
+                    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+                    const existing = cart.find(i => i.id === id);
+                    if (existing) {
+                        existing.quantity += 1;
+                    } else {
+                        cart.push({
+                            id,
+                            name,
+                            price: discountedPrice,
+                            originalPrice: product.price,
+                            discount: product.discount || 0,
+                            imageURL,
+                            quantity: 1
+                        });
+                    }
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+
+                    // Show feedback to user
+                    target.textContent = 'Added!';
+                    setTimeout(() => {
+                        target.textContent = 'Add to Cart';
+                    }, 1000);
+                }
+            });
+            
+            // Hide loading
+            window.loadingManager.hide();
+        }
+
+        loadProducts().catch(error => {
+            console.error('Error loading products:', error);
+            window.loadingManager.hide();
+        });
+
+        // Mobile menu functionality (works immediately, not dependent on auth state)
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileAccountSection = document.getElementById('mobile-account-section');
+        const mobileLoginSection = document.getElementById('mobile-login-section');
+        const mobileAccountName = document.getElementById('mobile-account-name');
+        const mobileAccountEmail = document.getElementById('mobile-account-email');
+        const mobileDashboardLink = document.getElementById('mobile-dashboard-link');
+        const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+        const mobileCartCount = document.getElementById('mobile-cart-count');
+        
+        // Force logout button to be visible
+        if (mobileLogoutBtn) {
+            mobileLogoutBtn.classList.remove('hidden');
+            mobileLogoutBtn.style.display = 'flex';
+            console.log('Logout button forced to be visible on page load');
+        }
+        
+        // Update mobile menu content based on auth state
+        function updateMobileMenuContent(user, role) {
+            const mobileAddressLink = document.getElementById('mobile-address-link');
+            
+            console.log('updateMobileMenuContent called:', { user: !!user, role, mobileAccountSection: !!mobileAccountSection, mobileLoginSection: !!mobileLoginSection });
+            
+            if (user) {
+                // Show account section, hide login section
+                if (mobileAccountSection) {
+                    mobileAccountSection.classList.remove('hidden');
+                    mobileAccountSection.style.display = 'block';
+                }
+                if (mobileLoginSection) {
+                    mobileLoginSection.classList.add('hidden');
+                    mobileLoginSection.style.display = 'none';
+                }
+                if (mobileDashboardLink) {
+                    mobileDashboardLink.classList.remove('hidden');
+                    mobileDashboardLink.style.display = 'flex';
+                }
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.classList.remove('hidden');
+                    mobileLogoutBtn.style.display = 'flex';
+                }
+                if (mobileAddressLink) {
+                    mobileAddressLink.classList.remove('hidden');
+                    mobileAddressLink.style.display = 'flex';
+                }
+                
+                // Update mobile account info
+                if (mobileAccountName) mobileAccountName.textContent = user?.displayName || 'Account';
+                if (mobileAccountEmail) mobileAccountEmail.textContent = user?.email || '';
+                if (mobileDashboardLink) mobileDashboardLink.href = role === 'admin' ? 'admin/' : role === 'pharmacy' ? 'pharmacy/' : 'user-dashboard/';
+            } else {
+                // Show login section, hide account section
+                if (mobileAccountSection) {
+                    mobileAccountSection.classList.add('hidden');
+                    mobileAccountSection.style.display = 'none';
+                }
+                if (mobileLoginSection) {
+                    mobileLoginSection.classList.remove('hidden');
+                    mobileLoginSection.style.display = 'flex';
+                    mobileLoginSection.style.visibility = 'visible';
+                }
+                if (mobileDashboardLink) {
+                    mobileDashboardLink.classList.add('hidden');
+                    mobileDashboardLink.style.display = 'none';
+                }
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.classList.add('hidden');
+                    mobileLogoutBtn.style.display = 'none';
+                }
+                if (mobileAddressLink) {
+                    mobileAddressLink.classList.add('hidden');
+                    mobileAddressLink.style.display = 'none';
+                }
+            }
+        }
+        
+        // Initialize mobile menu content after function definition
+        const initialRole = localStorage.getItem('role') || 'user';
+        updateMobileMenuContent(null, initialRole);
+        
+        if (mobileMenuBtn && mobileMenu) {
+            console.log('Mobile menu elements found:', { mobileMenuBtn, mobileMenu, mobileMenuClose });
+            
+            // Update mobile cart count
+            if (mobileCartCount) {
+                mobileCartCount.textContent = String(JSON.parse(localStorage.getItem("cart") || "[]").reduce((sum, i) => sum + i.quantity, 0));
+            }
+            
+            // Update bottom cart count
+            updateCartCount();
+            
+            // Mobile menu toggle
+            mobileMenuBtn.onclick = (e) => {
+                e.stopPropagation();
+                mobileMenu.classList.remove('hidden');
+                mobileMenuOverlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            };
+            
+            // Mobile menu close
+            const closeMobileMenu = () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuOverlay.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            };
+            
+            if (mobileMenuClose) {
+                mobileMenuClose.onclick = (e) => {
+                    e.stopPropagation();
+                    closeMobileMenu();
+                };
+            }
+            
+            // Close on overlay click
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.onclick = (e) => {
+                    e.stopPropagation();
+                    closeMobileMenu();
+                };
+            }
+            
+            // Mobile logout
+            if (mobileLogoutBtn) {
+                mobileLogoutBtn.onclick = async () => { 
+                    await logout(); 
+                };
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (mobileMenuBtn && mobileMenu && !mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Mobile menu content will be updated in the main auth listener below
+        } else {
+            console.log('Mobile menu elements NOT found:', { 
+                mobileMenuBtn: !!mobileMenuBtn, 
+                mobileMenu: !!mobileMenu, 
+                mobileMenuClose: !!mobileMenuClose 
+            });
+        }
+
+        // Toggle login/account UI based on auth
+        onAuthStateChanged(auth, async (user) => {
+            const loginLink = document.getElementById('login-link');
+            const heroSignin = document.getElementById('hero-signin');
+            const accountArea = document.getElementById('account-area');
+            const accountName = document.getElementById('account-name');
+            const accountEmail = document.getElementById('account-email');
+            const accountRole = document.getElementById('account-role');
+            const dashboardLink = document.getElementById('dashboard-link');
+            const accountBtn = document.getElementById('account-btn');
+            const accountMenu = document.getElementById('account-menu');
+            const logoutBtn = document.getElementById('logout-btn');
+            if (!loginLink || !accountArea) return;
+            if (user) {
+                loginLink.classList.add('hidden');
+                if (heroSignin) heroSignin.classList.add('hidden');
+                accountArea.classList.remove('hidden');
+                accountName.textContent = user.displayName || 'Account';
+                accountEmail.textContent = user.email || '';
+                let role = 'user';
+                try { role = await fetchUserRole(user.uid); } catch { }
+                accountRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                dashboardLink.href = role === 'admin' ? 'admin/' : role === 'pharmacy' ? 'pharmacy/' : 'user-dashboard/';
+                accountBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    accountMenu.classList.toggle('hidden');
+                };
+                logoutBtn.onclick = async () => { await logout(); };
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!accountArea.contains(e.target)) {
+                        accountMenu.classList.add('hidden');
+                    }
+                });
+            } else {
+                loginLink.classList.remove('hidden');
+                if (heroSignin) heroSignin.classList.remove('hidden');
+                accountArea.classList.add('hidden');
+            }
+            
+            // Update mobile menu content
+            const role = user ? (localStorage.getItem('role') || await fetchUserRole(user.uid)) : 'user';
+            updateMobileMenuContent(user, role);
+        });
+        
+        // Initialize mobile menu content after elements are loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialRole = localStorage.getItem('role') || 'user';
+            updateMobileMenuContent(null, initialRole);
+        });
+    </script>
+</body>
+
+</html>

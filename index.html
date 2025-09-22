@@ -20,10 +20,24 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="PHARMA DIRECT">
     <style>
-        /* Mobile menu height constraints */
+        /* Mobile menu height constraints - prevent overflow */
         #mobile-menu {
-            max-height: 100vh;
             height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 320px;
+            max-width: 90vw;
+        }
+        
+        /* Use actual viewport height for mobile browsers */
+        @media (max-width: 768px) {
+            #mobile-menu {
+                height: 100vh;
+                max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            }
         }
         
         /* Ensure logout button is always visible */
@@ -31,27 +45,94 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            min-height: 0;
+            max-height: 100vh;
+            overflow: hidden;
         }
         
-        /* Scrollable navigation area */
+        /* Scrollable navigation area with strict height limits */
         .mobile-nav-scroll {
             flex: 1;
             overflow-y: auto;
             min-height: 0;
+            max-height: calc(100vh - 180px); /* Reserve space for header and bottom actions */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
         
-        /* Bottom actions always visible */
-        .mobile-bottom-actions {
-            flex-shrink: 0;
-            margin-top: auto;
+        /* Ensure the menu never exceeds viewport */
+        @supports (height: 100dvh) {
+            #mobile-menu {
+                height: 100dvh;
+                max-height: 100dvh;
+            }
+            
+            .mobile-nav-scroll {
+                max-height: calc(100dvh - 200px);
+            }
         }
         
-        /* Ensure proper spacing on small screens */
-        @media (max-height: 600px) {
+        /* Fallback for older browsers - use smaller viewport */
+        @media (max-width: 768px) {
             .mobile-nav-scroll {
                 max-height: calc(100vh - 200px);
             }
+        }
+        
+        /* Bottom actions always visible and fixed */
+        .mobile-bottom-actions {
+            flex-shrink: 0;
+            margin-top: auto;
+            position: sticky;
+            bottom: 0;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        /* User info section compact */
+        .mobile-user-info {
+            flex-shrink: 0;
+            padding: 12px 16px;
+        }
+        
+        /* Navigation items more compact */
+        .mobile-nav-item {
+            padding: 8px 12px;
+            margin: 2px 0;
+        }
+        
+        /* Ensure proper spacing on very small screens */
+        @media (max-height: 600px) {
+            .mobile-nav-scroll {
+                max-height: calc(100vh - 160px);
+            }
+            
+            .mobile-user-info {
+                padding: 8px 16px;
+            }
+            
+            .mobile-nav-item {
+                padding: 6px 12px;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-height: 500px) {
+            .mobile-nav-scroll {
+                max-height: calc(100vh - 140px);
+            }
+            
+            .mobile-user-info {
+                padding: 6px 16px;
+            }
+            
+            .mobile-nav-item {
+                padding: 4px 12px;
+            }
+        }
+        
+        /* Prevent body scroll when menu is open */
+        body.menu-open {
+            overflow: hidden;
+            height: 100vh;
         }
     </style>
 </head>
@@ -156,15 +237,15 @@
             <!-- Mobile Menu Content -->
             <div class="mobile-menu-content">
                 <!-- User Info Section -->
-                <div id="mobile-account-section" class="p-4 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+                <div id="mobile-account-section" class="mobile-user-info bg-gray-50 border-b border-gray-200">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="font-bold text-base text-gray-900 truncate" id="mobile-account-name">Loading...</p>
+                            <p class="font-bold text-sm text-gray-900 truncate" id="mobile-account-name">Loading...</p>
                             <p class="text-xs text-gray-500 truncate" id="mobile-account-email">Loading...</p>
                         </div>
                     </div>
@@ -176,8 +257,8 @@
                         <!-- Primary Navigation -->
                         <div class="space-y-1">
                             <!-- Home -->
-                            <a href="./" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 group bg-emerald-50 text-emerald-700">
-                                <div class="w-8 h-8 bg-emerald-100 group-hover:bg-emerald-200 rounded-lg flex items-center justify-center transition-colors">
+                            <a href="./" class="mobile-nav-item flex items-center gap-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 group bg-emerald-50 text-emerald-700">
+                                <div class="w-7 h-7 bg-emerald-100 group-hover:bg-emerald-200 rounded-lg flex items-center justify-center transition-colors">
                                     <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                                     </svg>
@@ -186,8 +267,8 @@
                             </a>
                             
                             <!-- Categories -->
-                            <a href="categories/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 group">
-                                <div class="w-8 h-8 bg-blue-100 group-hover:bg-blue-200 rounded-lg flex items-center justify-center transition-colors">
+                            <a href="categories/" class="mobile-nav-item flex items-center gap-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 group">
+                                <div class="w-7 h-7 bg-blue-100 group-hover:bg-blue-200 rounded-lg flex items-center justify-center transition-colors">
                                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                                     </svg>
@@ -196,8 +277,8 @@
                             </a>
                             
                             <!-- Track Order -->
-                            <a href="track/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-purple-50 hover:text-purple-700 transition-all duration-200 group">
-                                <div class="w-8 h-8 bg-purple-100 group-hover:bg-purple-200 rounded-lg flex items-center justify-center transition-colors">
+                            <a href="track/" class="mobile-nav-item flex items-center gap-3 rounded-lg hover:bg-purple-50 hover:text-purple-700 transition-all duration-200 group">
+                                <div class="w-7 h-7 bg-purple-100 group-hover:bg-purple-200 rounded-lg flex items-center justify-center transition-colors">
                                     <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                     </svg>
@@ -206,8 +287,8 @@
                             </a>
                             
                             <!-- Cart -->
-                            <a href="cart/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-green-50 hover:text-green-700 transition-all duration-200 group">
-                                <div class="w-8 h-8 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors">
+                            <a href="cart/" class="mobile-nav-item flex items-center gap-3 rounded-lg hover:bg-green-50 hover:text-green-700 transition-all duration-200 group">
+                                <div class="w-7 h-7 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors">
                                     <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5"></path>
                                     </svg>
@@ -736,14 +817,47 @@
                 e.stopPropagation();
                 mobileMenu.classList.remove('hidden');
                 mobileMenuOverlay.classList.remove('hidden');
+                document.body.classList.add('menu-open');
                 document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.height = '100vh'; // Fix height
+                
+                // Dynamically adjust menu height for mobile browsers
+                // Use the smaller of window.innerHeight or document.documentElement.clientHeight
+                // This accounts for mobile browser UI that might be visible
+                const viewportHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+                if (menuContent) {
+                    menuContent.style.maxHeight = `${viewportHeight}px`;
+                }
+                
+                // Adjust navigation scroll area with more conservative calculation
+                const navScroll = mobileMenu.querySelector('.mobile-nav-scroll');
+                if (navScroll) {
+                    // Reserve more space for mobile browser UI
+                    const availableHeight = viewportHeight - 200; // Increased from 180 to 200
+                    navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`; // Minimum 150px
+                }
+                
+                // Force a small delay to ensure browser UI has settled
+                setTimeout(() => {
+                    const actualHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                    if (menuContent) {
+                        menuContent.style.maxHeight = `${actualHeight}px`;
+                    }
+                    if (navScroll) {
+                        const availableHeight = actualHeight - 200;
+                        navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`;
+                    }
+                }, 100);
             };
             
             // Mobile menu close
             const closeMobileMenu = () => {
                 mobileMenu.classList.add('hidden');
                 mobileMenuOverlay.classList.add('hidden');
+                document.body.classList.remove('menu-open');
                 document.body.style.overflow = ''; // Restore scrolling
+                document.body.style.height = ''; // Restore height
             };
             
             if (mobileMenuClose) {
@@ -848,6 +962,47 @@
                     });
             });
         }
+        
+        // Handle viewport changes for mobile menu
+        window.addEventListener('resize', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                // Use the smaller of the two height measurements to account for mobile browser UI
+                const viewportHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+                const navScroll = mobileMenu.querySelector('.mobile-nav-scroll');
+                
+                if (menuContent) {
+                    menuContent.style.maxHeight = `${viewportHeight}px`;
+                }
+                
+                if (navScroll) {
+                    const availableHeight = viewportHeight - 200; // Increased buffer
+                    navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`;
+                }
+            }
+        });
+        
+        // Also handle orientation changes and browser UI changes
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    const viewportHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                    const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+                    const navScroll = mobileMenu.querySelector('.mobile-nav-scroll');
+                    
+                    if (menuContent) {
+                        menuContent.style.maxHeight = `${viewportHeight}px`;
+                    }
+                    
+                    if (navScroll) {
+                        const availableHeight = viewportHeight - 200;
+                        navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`;
+                    }
+                }
+            }, 300); // Longer delay for orientation change
+        });
     </script>
 </body>
 

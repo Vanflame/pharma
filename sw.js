@@ -1,32 +1,32 @@
 // Service Worker for PHARMA DIRECT PWA
 const CACHE_NAME = 'pharma-direct-v1.0.0';
 const urlsToCache = [
-  '/pharma/',
-  '/pharma/index.html',
-  '/pharma/categories/',
-  '/pharma/categories/index.html',
-  '/pharma/product/',
-  '/pharma/cart/',
-  '/pharma/track/',
-  '/pharma/user-dashboard/',
-  '/pharma/admin/',
-  '/pharma/pharmacy/',
-  '/pharma/login/',
-  '/pharma/register/',
-  '/pharma/pay/',
-  '/pharma/addresses/',
-  '/pharma/css/styles.css',
-  '/pharma/js/firebase.js',
-  '/pharma/js/auth.js',
-  '/pharma/js/cart.js',
-  '/pharma/js/main.js',
-  '/pharma/js/loading.js',
-  '/pharma/js/imageCache.js',
-  '/pharma/js/admin.js',
-  '/pharma/js/pharmacy.js',
-  '/pharma/img/icon.png',
-  '/pharma/favicon.ico',
-  '/pharma/manifest.json',
+  './',
+  './index.html',
+  './categories/',
+  './categories/index.html',
+  './product/',
+  './cart/',
+  './track/',
+  './user-dashboard/',
+  './admin/',
+  './pharmacy/',
+  './login/',
+  './register/',
+  './pay/',
+  './addresses/',
+  './css/styles.css',
+  './js/firebase.js',
+  './js/auth.js',
+  './js/cart.js',
+  './js/main.js',
+  './js/loading.js',
+  './js/imageCache.js',
+  './js/admin.js',
+  './js/pharmacy.js',
+  './img/icon.png',
+  './favicon.ico',
+  './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
   'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js'
@@ -112,7 +112,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // Return offline page for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('/pharma/index.html');
+          return caches.match('./index.html');
         }
       })
   );
@@ -166,7 +166,7 @@ self.addEventListener('notificationclick', (event) => {
   
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/pharma/')
+      clients.openWindow('./')
     );
   }
 });

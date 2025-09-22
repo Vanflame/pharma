@@ -121,11 +121,13 @@ export function logout() {
     
     return signOut(auth).then(() => {
         // Redirect to login page after successful logout
-        window.location.href = '/login/';
+        const basePath = getRedirectBasePath();
+        window.location.href = `${basePath}login/`;
     }).catch((error) => {
         console.error('Logout error:', error);
         // Still redirect even if there's an error
-        window.location.href = '/login/';
+        const basePath = getRedirectBasePath();
+        window.location.href = `${basePath}login/`;
     });
 }
 

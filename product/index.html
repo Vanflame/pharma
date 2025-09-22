@@ -19,6 +19,84 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="PHARMA DIRECT">
+    <style>
+        /* Mobile menu height constraints - prevent overflow */
+        #mobile-menu {
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 320px;
+            max-width: 90vw;
+        }
+        
+        /* Use actual viewport height for mobile browsers */
+        @media (max-width: 768px) {
+            #mobile-menu {
+                height: 100vh;
+                max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* Ensure logout button is always visible */
+        .mobile-menu-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .mobile-nav-scroll {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            max-height: calc(100vh - 180px); /* Reserve space for header and bottom actions */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+        
+        /* Ensure the menu never exceeds viewport */
+        @supports (height: 100dvh) {
+            #mobile-menu {
+                height: 100dvh;
+                max-height: 100dvh;
+            }
+            
+            .mobile-nav-scroll {
+                max-height: calc(100dvh - 200px);
+            }
+        }
+        
+        /* Fallback for older browsers - use smaller viewport */
+        @media (max-width: 768px) {
+            .mobile-nav-scroll {
+                max-height: calc(100vh - 200px);
+            }
+        }
+        
+        /* Bottom actions always visible and fixed */
+        .mobile-bottom-actions {
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+        
+        /* User info section */
+        .mobile-user-info {
+            flex-shrink: 0;
+        }
+        
+        /* Navigation items */
+        .mobile-nav-item {
+            flex-shrink: 0;
+        }
+        
+        /* Prevent body scroll when menu is open */
+        body.menu-open {
+            overflow: hidden;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-white text-gray-900"
@@ -665,14 +743,47 @@
                 e.stopPropagation();
                 mobileMenu.classList.remove('hidden');
                 mobileMenuOverlay.classList.remove('hidden');
+                document.body.classList.add('menu-open');
                 document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.height = '100vh'; // Fix height
+                
+                // Dynamically adjust menu height for mobile browsers
+                // Use the smaller of window.innerHeight or document.documentElement.clientHeight
+                // This accounts for mobile browser UI that might be visible
+                const viewportHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+                if (menuContent) {
+                    menuContent.style.maxHeight = `${viewportHeight}px`;
+                }
+                
+                // Adjust navigation scroll area with more conservative calculation
+                const navScroll = mobileMenu.querySelector('.mobile-nav-scroll');
+                if (navScroll) {
+                    // Reserve more space for mobile browser UI
+                    const availableHeight = viewportHeight - 200; // Increased from 180 to 200
+                    navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`; // Minimum 150px
+                }
+                
+                // Force a small delay to ensure browser UI has settled
+                setTimeout(() => {
+                    const actualHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                    if (menuContent) {
+                        menuContent.style.maxHeight = `${actualHeight}px`;
+                    }
+                    if (navScroll) {
+                        const availableHeight = actualHeight - 200;
+                        navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`;
+                    }
+                }, 100);
             };
             
             // Mobile menu close
             const closeMobileMenu = () => {
                 mobileMenu.classList.add('hidden');
                 mobileMenuOverlay.classList.add('hidden');
+                document.body.classList.remove('menu-open');
                 document.body.style.overflow = ''; // Restore scrolling
+                document.body.style.height = ''; // Restore height
             };
             
             if (mobileMenuClose) {
@@ -747,6 +858,47 @@
                 });
             }
         }
+        
+        // Handle viewport changes for mobile menu
+        window.addEventListener('resize', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                // Use the smaller of the two height measurements to account for mobile browser UI
+                const viewportHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+                const navScroll = mobileMenu.querySelector('.mobile-nav-scroll');
+                
+                if (menuContent) {
+                    menuContent.style.maxHeight = `${viewportHeight}px`;
+                }
+                
+                if (navScroll) {
+                    const availableHeight = viewportHeight - 200; // Increased buffer
+                    navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`;
+                }
+            }
+        });
+        
+        // Also handle orientation changes and browser UI changes
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    const viewportHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
+                    const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+                    const navScroll = mobileMenu.querySelector('.mobile-nav-scroll');
+                    
+                    if (menuContent) {
+                        menuContent.style.maxHeight = `${viewportHeight}px`;
+                    }
+                    
+                    if (navScroll) {
+                        const availableHeight = viewportHeight - 200;
+                        navScroll.style.maxHeight = `${Math.max(availableHeight, 150)}px`;
+                    }
+                }
+            }, 300); // Longer delay for orientation change
+        });
     </script>
 </body>
 

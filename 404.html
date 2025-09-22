@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHARMA DIRECT - Redirecting...</title>
+    <style>
+        body {
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            max-width: 500px;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">PHARMA DIRECT</div>
+        <div class="message">Redirecting to the correct page...</div>
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        // GitHub Pages routing handler
+        (function() {
+            const currentPath = window.location.pathname;
+            const searchParams = window.location.search;
+            
+            // Route mapping for GitHub Pages
+            const routes = {
+                '/product/': '/product/index.html',
+                '/categories/': '/categories/index.html',
+                '/cart/': '/cart/index.html',
+                '/track/': '/track/index.html',
+                '/pay/': '/pay/index.html',
+                '/user-dashboard/': '/user-dashboard/index.html',
+                '/addresses/': '/addresses/index.html',
+                '/login/': '/login/index.html',
+                '/register/': '/register/index.html',
+                '/admin/': '/admin/index.html',
+                '/pharmacy/': '/pharmacy/index.html',
+                '/disabled/': '/disabled/index.html'
+            };
+            
+            // Check if current path matches any route
+            for (const [route, file] of Object.entries(routes)) {
+                if (currentPath.startsWith(route)) {
+                    // Redirect to the actual file with search params
+                    window.location.replace(file + searchParams);
+                    return;
+                }
+            }
+            
+            // If no route matches, redirect to home
+            window.location.replace('/');
+        })();
+    </script>
+</body>
+</html>

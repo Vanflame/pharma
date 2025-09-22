@@ -23,18 +23,18 @@
             
             // Route mapping for GitHub Pages
             const routes = {
-                '/product/': '/product/index.html',
-                '/categories/': '/categories/index.html',
-                '/cart/': '/cart/index.html',
-                '/track/': '/track/index.html',
-                '/pay/': '/pay/index.html',
-                '/user-dashboard/': '/user-dashboard/index.html',
-                '/addresses/': '/addresses/index.html',
-                '/login/': '/login/index.html',
-                '/register/': '/register/index.html',
-                '/admin/': '/admin/index.html',
-                '/pharmacy/': '/pharmacy/index.html',
-                '/disabled/': '/disabled/index.html'
+                '/pharma/product/': './product/index.html',
+                '/pharma/categories/': './categories/index.html',
+                '/pharma/cart/': './cart/index.html',
+                '/pharma/track/': './track/index.html',
+                '/pharma/pay/': './pay/index.html',
+                '/pharma/user-dashboard/': './user-dashboard/index.html',
+                '/pharma/addresses/': './addresses/index.html',
+                '/pharma/login/': './login/index.html',
+                '/pharma/register/': './register/index.html',
+                '/pharma/admin/': './admin/index.html',
+                '/pharma/pharmacy/': './pharmacy/index.html',
+                '/pharma/disabled/': './disabled/index.html'
             };
             
             // Check if current path matches any route
@@ -50,18 +50,18 @@
             
             // Handle root paths without trailing slash
             const rootRoutes = {
-                '/product': '/product/index.html',
-                '/categories': '/categories/index.html',
-                '/cart': '/cart/index.html',
-                '/track': '/track/index.html',
-                '/pay': '/pay/index.html',
-                '/user-dashboard': '/user-dashboard/index.html',
-                '/addresses': '/addresses/index.html',
-                '/login': '/login/index.html',
-                '/register': '/register/index.html',
-                '/admin': '/admin/index.html',
-                '/pharmacy': '/pharmacy/index.html',
-                '/disabled': '/disabled/index.html'
+                '/pharma/product': './product/index.html',
+                '/pharma/categories': './categories/index.html',
+                '/pharma/cart': './cart/index.html',
+                '/pharma/track': './track/index.html',
+                '/pharma/pay': './pay/index.html',
+                '/pharma/user-dashboard': './user-dashboard/index.html',
+                '/pharma/addresses': './addresses/index.html',
+                '/pharma/login': './login/index.html',
+                '/pharma/register': './register/index.html',
+                '/pharma/admin': './admin/index.html',
+                '/pharma/pharmacy': './pharmacy/index.html',
+                '/pharma/disabled': './disabled/index.html'
             };
             
             for (const [route, file] of Object.entries(rootRoutes)) {
@@ -75,7 +75,7 @@
             
             console.log('No route matched, redirecting to home');
             // If no route matches, redirect to home
-            window.location.href = '/';
+            window.location.href = './';
         })();
     </script>
 </body>

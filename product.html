@@ -7,7 +7,7 @@
         // Get the current URL and redirect to the folder-based URL
         const url = new URL(window.location);
         const productId = url.searchParams.get('id');
-        const redirectUrl = '/product/index.html' + (productId ? '?id=' + productId : '');
+        const redirectUrl = './product/index.html' + (productId ? '?id=' + productId : '');
         window.location.replace(redirectUrl);
     </script>
 </head>

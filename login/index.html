@@ -9,27 +9,46 @@
     <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
-<body class="min-h-screen bg-gray-50">
+<body class="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50">
     <div class="min-h-screen grid place-items-center px-4">
-        <div class="w-full max-w-md bg-white rounded-2xl p-6 shadow">
-            <a href="../" class="text-sm text-gray-500">← Back to Home</a>
-            <h1 class="mt-2 text-2xl font-semibold">Welcome back</h1>
-            <p class="text-gray-600">Sign in to continue</p>
-            <form id="login-form" class="mt-6 space-y-4">
+        <div class="w-full max-w-md bg-white rounded-2xl p-8 shadow-lg">
+            <a href="../" class="text-sm text-gray-500 hover:text-gray-700 transition-colors">← Back to Home</a>
+            <div class="mt-4">
+                <h1 class="text-3xl font-bold text-gray-900">Welcome back</h1>
+                <p class="mt-2 text-gray-600">Sign in to your account to continue</p>
+            </div>
+            
+            <form id="login-form" class="mt-8 space-y-6">
                 <div>
-                    <label class="text-sm">Email</label>
-                    <input name="email" type="email" required class="mt-1 w-full rounded-lg border px-3 py-2" />
+                    <label class="text-sm font-medium text-gray-700">Email Address</label>
+                    <input name="email" type="email" required 
+                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
+                           placeholder="Enter your email address" />
+                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
                 </div>
+                
                 <div>
-                    <label class="text-sm">Password</label>
+                    <label class="text-sm font-medium text-gray-700">Password</label>
                     <input name="password" type="password" required minlength="6"
-                        class="mt-1 w-full rounded-lg border px-3 py-2" />
+                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
+                           placeholder="Enter your password" />
+                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
                 </div>
-                <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2">Sign in</button>
+                
+                <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-3 font-medium hover:bg-emerald-700 transition-colors focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                    Sign In
+                </button>
             </form>
-            <p class="mt-4 text-sm text-gray-600">No account? <a href="../register/"
-                    class="text-emerald-700">Register</a></p>
-            <div id="error" class="mt-3 text-sm text-red-600 hidden"></div>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">Don't have an account? 
+                    <a href="../register/" class="text-emerald-600 hover:text-emerald-700 font-medium transition-colors">
+                        Create one here
+                    </a>
+                </p>
+            </div>
+            
+            <div id="error" class="mt-4 text-sm text-red-600 hidden"></div>
         </div>
     </div>
 
@@ -48,10 +67,38 @@
         console.log('Form found:', form);
         console.log('Submit button found:', submitBtn);
         
-        // Test button click
-        submitBtn.addEventListener('click', () => {
-            console.log('Button clicked!');
-        });
+        // Validation functions
+        function validateLoginForm(data) {
+            const errors = {};
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.add('hidden');
+                el.textContent = '';
+            });
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!data.email || !emailRegex.test(data.email)) {
+                errors.email = 'Please enter a valid email address';
+            }
+            
+            // Password validation
+            if (!data.password || data.password.length < 6) {
+                errors.password = 'Password must be at least 6 characters long';
+            }
+            
+            // Display errors
+            Object.keys(errors).forEach(field => {
+                const errorElement = form.querySelector(`[name="${field}"]`).parentNode.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.textContent = errors[field];
+                    errorElement.classList.remove('hidden');
+                }
+            });
+            
+            return Object.keys(errors).length === 0;
+        }
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -65,10 +112,16 @@
             
             console.log('🔐 Login form: Starting login process');
             
+            const data = Object.fromEntries(new FormData(form).entries());
+            
+            // Validate form
+            if (!validateLoginForm(data)) {
+                console.log('❌ Login form: Validation failed');
+                return;
+            }
+            
             // Set loading state
             setButtonLoading(submitBtn, true, 'Signing in...');
-            
-            const data = Object.fromEntries(new FormData(form).entries());
             try {
                 // Perform login - authManager will handle redirects automatically
                 const user = await loginUser({ email: data.email, password: data.password });

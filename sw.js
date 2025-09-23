@@ -1,5 +1,5 @@
 // Service Worker for PHARMA DIRECT PWA
-const CACHE_NAME = 'pharma-direct-v1.0.0';
+const CACHE_NAME = 'pharma-direct-v2.0.0';
 const urlsToCache = [
   './',
   './index.html',
@@ -24,9 +24,8 @@ const urlsToCache = [
   './js/imageCache.js',
   './js/admin.js',
   './js/pharmacy.js',
-  './img/icon.png',
   './favicon.ico',
-  './manifest.json',
+  './manifest.json?v=2',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
   'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js'
@@ -78,7 +77,10 @@ self.addEventListener('fetch', (event) => {
       event.request.url.includes('googleapis') ||
       event.request.url.includes('googleusercontent') ||
       event.request.url.includes('firestore') ||
-      event.request.url.includes('identitytoolkit')) {
+      event.request.url.includes('identitytoolkit') ||
+      event.request.url.startsWith('chrome-extension://') ||
+      event.request.url.startsWith('moz-extension://') ||
+      event.request.url.startsWith('safari-extension://')) {
     return;
   }
 

@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../img/icon.png">
     <link rel="apple-touch-icon" href="../img/icon.png">
-    <link rel="manifest" href="../manifest.json">
+    <link rel="manifest" href="../manifest.json?v=2">
     <meta name="theme-color" content="#10b981">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -467,12 +467,20 @@
         let pharmacyId = null;
 
         async function ensurePharmacy(user) {
+            console.log('🔍 ensurePharmacy: Checking user:', user.uid);
             const userDoc = await getDoc(doc(db, COLLECTIONS.users, user.uid));
-            if (!userDoc.exists() || userDoc.data().role !== 'pharmacy') {
+            const exists = userDoc.exists();
+            const data = exists ? userDoc.data() : null;
+            const role = exists ? (data.role || 'user') : 'user';
+            console.log('🔍 ensurePharmacy: Document exists:', exists, 'Role:', role);
+            
+            if (!exists || role !== 'pharmacy') {
+                console.log('❌ ensurePharmacy: User is not pharmacy, redirecting to main page');
                 window.location.href = '../';
                 return;
             }
-            if (userDoc.data().disabled) {
+            if (data.disabled) {
+                console.log('❌ ensurePharmacy: User is disabled, redirecting to disabled page');
                 window.location.href = '../disabled/';
                 return;
             }
@@ -1831,6 +1839,8 @@
                 }, 1500);
                 return; 
             }
+            // Small delay to ensure localStorage is properly set
+            await new Promise(resolve => setTimeout(resolve, 100));
             await ensurePharmacy(user);
             const pharmDoc = await getDoc(doc(db, COLLECTIONS.pharmacies, user.uid));
             if (!pharmDoc.exists() || pharmDoc.data().disabled) {

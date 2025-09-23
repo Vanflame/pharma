@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../img/icon.png">
     <link rel="apple-touch-icon" href="../img/icon.png">
-    <link rel="manifest" href="../manifest.json">
+    <link rel="manifest" href="../manifest.json?v=2">
     <meta name="theme-color" content="#10b981">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -411,9 +411,18 @@
         };
 
         async function ensureAdmin(user) {
+            console.log('🔍 ensureAdmin: Checking user:', user.uid);
             const snap = await getDoc(doc(db, COLLECTIONS.users, user.uid));
-            if (!snap.exists() || snap.data().role !== 'admin') {
+            const exists = snap.exists();
+            const data = exists ? snap.data() : null;
+            const role = exists ? (data.role || 'user') : 'user';
+            console.log('🔍 ensureAdmin: Document exists:', exists, 'Role:', role);
+            
+            if (!exists || role !== 'admin') {
+                console.log('❌ ensureAdmin: User is not admin, redirecting to main page');
                 window.location.href = '../';
+            } else {
+                console.log('✅ ensureAdmin: User is admin, allowing access');
             }
         }
 
@@ -2061,6 +2070,8 @@
                 }, 1500);
                 return; 
             }
+            // Small delay to ensure localStorage is properly set
+            await new Promise(resolve => setTimeout(resolve, 100));
             await ensureAdmin(user);
             await Promise.all([loadOverview(), loadUsers(), loadPharmacies(), loadCodSettings()]);
             loadAllAdminOrders();

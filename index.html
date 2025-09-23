@@ -13,7 +13,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="img/icon.png">
     <link rel="apple-touch-icon" href="img/icon.png">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=2">
     <meta name="theme-color" content="#10b981">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -535,10 +535,14 @@
         import { getFirestore, collection, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import { firebaseConfig, COLLECTIONS, formatCurrency } from "./js/firebase.js";
         import { fetchUserRole, logout } from "./js/auth.js";
+        import { authManager } from "./js/authManager.js";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // The auth manager will handle redirects automatically
+        console.log('🏠 Landing page: Auth manager will handle redirects');
 
         // Update cart count from localStorage
         function updateCartCount() {
@@ -742,7 +746,7 @@
         function updateMobileMenuContent(user, role) {
             const mobileAddressLink = document.getElementById('mobile-address-link');
             
-            console.log('updateMobileMenuContent called:', { user: !!user, role, mobileAccountSection: !!mobileAccountSection, mobileLoginSection: !!mobileLoginSection });
+            console.log('🔄 updateMobileMenuContent called:', { user: !!user, role, userEmail: user?.email, mobileAccountSection: !!mobileAccountSection, mobileLoginSection: !!mobileLoginSection });
             
             if (user) {
                 // Show account section, hide login section
@@ -898,8 +902,10 @@
             });
         }
 
-        // Toggle login/account UI based on auth
-        onAuthStateChanged(auth, async (user) => {
+        // Function to update UI based on auth state
+        function updateAuthUI(user, role) {
+            console.log('🔄 updateAuthUI called with:', { user: !!user, role, userEmail: user?.email });
+            
             const loginLink = document.getElementById('login-link');
             const heroSignin = document.getElementById('hero-signin');
             const accountArea = document.getElementById('account-area');
@@ -910,17 +916,23 @@
             const accountBtn = document.getElementById('account-btn');
             const accountMenu = document.getElementById('account-menu');
             const logoutBtn = document.getElementById('logout-btn');
-            if (!loginLink || !accountArea) return;
-            if (user) {
+            
+            console.log('🔄 UI elements found:', { loginLink: !!loginLink, accountArea: !!accountArea });
+            
+            if (!loginLink || !accountArea) {
+                console.log('❌ Missing required UI elements, cannot update');
+                return;
+            }
+            
+            if (user && role) {
                 loginLink.classList.add('hidden');
                 if (heroSignin) heroSignin.classList.add('hidden');
                 accountArea.classList.remove('hidden');
                 accountName.textContent = user.displayName || 'Account';
                 accountEmail.textContent = user.email || '';
-                let role = 'user';
-                try { role = await fetchUserRole(user.uid); } catch { }
                 accountRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
                 dashboardLink.href = role === 'admin' ? 'admin/' : role === 'pharmacy' ? 'pharmacy/' : 'user-dashboard/';
+                
                 accountBtn.onclick = (e) => {
                     e.stopPropagation();
                     accountMenu.classList.toggle('hidden');
@@ -933,22 +945,78 @@
                         accountMenu.classList.add('hidden');
                     }
                 });
+                
+                // Update mobile menu content
+                updateMobileMenuContent(user, role);
             } else {
                 loginLink.classList.remove('hidden');
                 if (heroSignin) heroSignin.classList.remove('hidden');
                 accountArea.classList.add('hidden');
+                
+                // Update mobile menu content
+                updateMobileMenuContent(null, null);
             }
+        }
+        
+        // Listen for auth state changes and update UI
+        onAuthStateChanged(auth, async (user) => {
+            console.log('🏠 Home page: Auth state changed - User:', user?.email || 'No user');
             
-            // Update mobile menu content
-            const role = user ? (localStorage.getItem('role') || await fetchUserRole(user.uid)) : 'user';
-            updateMobileMenuContent(user, role);
+            if (user) {
+                // Get user role
+                const role = localStorage.getItem('role') || 'user';
+                console.log('🏠 Home page: User role:', role);
+                console.log('🏠 Home page: Calling updateAuthUI with user and role');
+                
+                // Update UI to show logged-in state
+                updateAuthUI(user, role);
+            } else {
+                console.log('🏠 Home page: No user, calling updateAuthUI with null');
+                // Update UI to show logged-out state
+                updateAuthUI(null, null);
+            }
         });
         
         // Initialize mobile menu content after elements are loaded
         document.addEventListener('DOMContentLoaded', () => {
             const initialRole = localStorage.getItem('role') || 'user';
-            updateMobileMenuContent(null, initialRole);
+            const currentUser = auth.currentUser;
+            
+            console.log('🏠 Home page: DOMContentLoaded - User:', currentUser?.email || 'None', 'Role:', initialRole);
+            
+            if (currentUser) {
+                console.log('🏠 Home page: User already logged in on page load, updating UI');
+                updateAuthUI(currentUser, initialRole);
+            } else {
+                console.log('🏠 Home page: No user on page load, showing login UI');
+                updateMobileMenuContent(null, initialRole);
+            }
         });
+        
+        // Also check auth state after a short delay to catch any missed updates
+        setTimeout(() => {
+            const currentUser = auth.currentUser;
+            const role = localStorage.getItem('role');
+            
+            console.log('🏠 Home page: Delayed check - User:', currentUser?.email || 'None', 'Role:', role);
+            
+            if (currentUser && role) {
+                console.log('🏠 Home page: Delayed check found logged in user, updating UI');
+                updateAuthUI(currentUser, role);
+            }
+        }, 1000);
+        
+        // Manual function to force update UI (for debugging)
+        window.forceUpdateUI = function() {
+            const currentUser = auth.currentUser;
+            const role = localStorage.getItem('role');
+            console.log('🧪 Force update UI - User:', currentUser?.email || 'None', 'Role:', role);
+            if (currentUser && role) {
+                updateAuthUI(currentUser, role);
+            } else {
+                updateAuthUI(null, null);
+            }
+        };
 
         // Register Service Worker for PWA functionality
         if ('serviceWorker' in navigator) {

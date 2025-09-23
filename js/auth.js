@@ -10,6 +10,12 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Clear redirecting flag on page load
+window.addEventListener('load', () => {
+    delete window.redirecting;
+    console.log('🔄 Page loaded, cleared redirecting flag');
+});
+
 export async function registerUser({ name, email, password, phone, role = "user" }) {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     try {
@@ -57,16 +63,29 @@ export async function loginUser({ email, password }) {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     try {
         const role = await fetchUserRole(cred.user.uid);
+        console.log('🔐 loginUser: Fetched role from database:', role);
         localStorage.setItem('uid', cred.user.uid);
         localStorage.setItem('role', role);
-    } catch { }
+        console.log('🔐 loginUser: Stored role in localStorage:', role);
+    } catch (error) {
+        console.error('❌ loginUser: Error fetching role:', error);
+        // Set default role if fetch fails
+        localStorage.setItem('uid', cred.user.uid);
+        localStorage.setItem('role', 'user');
+        console.log('🔐 loginUser: Set default role "user" due to error');
+    }
     return cred.user;
 }
 
 export async function fetchUserRole(uid) {
+    console.log('🔍 fetchUserRole: Fetching role for uid:', uid);
     const docRef = doc(db, COLLECTIONS.users, uid);
     const snap = await getDoc(docRef);
-    return snap.exists() ? (snap.data().role || "user") : "user";
+    const exists = snap.exists();
+    const data = exists ? snap.data() : null;
+    const role = exists ? (data.role || "user") : "user";
+    console.log('🔍 fetchUserRole: Document exists:', exists, 'Data:', data, 'Role:', role);
+    return role;
 }
 
 export async function fetchUserDoc(uid) {
@@ -75,69 +94,55 @@ export async function fetchUserDoc(uid) {
     return snap.exists() ? snap.data() : null;
 }
 
-// Helper function to get the correct base path for redirects
-function getRedirectBasePath() {
-    const isInSubfolder = window.location.pathname.includes('/login/') || 
-                         window.location.pathname.includes('/register/') || 
-                         window.location.pathname.includes('/admin/') || 
-                         window.location.pathname.includes('/pharmacy/') || 
-                         window.location.pathname.includes('/user-dashboard/') || 
-                         window.location.pathname.includes('/categories/') || 
-                         window.location.pathname.includes('/track/') || 
-                         window.location.pathname.includes('/cart/') || 
-                         window.location.pathname.includes('/addresses/') || 
-                         window.location.pathname.includes('/pay/') || 
-                         window.location.pathname.includes('/product/') || 
-                         window.location.pathname.includes('/disabled/');
-    return isInSubfolder ? "../" : "";
-}
+// Helper function removed - now handled by authManager
 
-export function redirectByRole(role) {
-    const basePath = getRedirectBasePath();
-    
-    // Redirect based on user role
-    switch (role) {
-        case 'admin':
-            window.location.href = `${basePath}admin/`;
-            break;
-        case 'pharmacy':
-            window.location.href = `${basePath}pharmacy/`;
-            break;
-        case 'user':
-        default:
-            window.location.href = basePath || "./";
-            break;
-    }
-}
+// Redirect function removed - now handled by authManager
 
-export function watchAuthAndRedirect() {
-    onAuthStateChanged(auth, async (user) => {
-        if (!user) return;
-        const u = await fetchUserDoc(user.uid);
-        if (u && u.disabled) {
-            const basePath = getRedirectBasePath();
-            window.location.href = `${basePath}disabled/`;
-            return;
-        }
-        const role = u?.role || "user";
-        redirectByRole(role);
-    });
-}
+// watchAuthAndRedirect function removed - now handled by authManager
 
 export function logout() {
     try { 
         localStorage.removeItem('uid'); 
         localStorage.removeItem('role'); 
+        // Clear redirecting flag
+        delete window.redirecting;
+        
+        // Clear auth manager state
+        if (window.authManager) {
+            window.authManager.reset();
+            console.log('🚪 Logout: Reset auth manager state');
+        }
     } catch { }
     
     return signOut(auth).then(() => {
+        console.log('🚪 Logout successful, redirecting to login');
         // Redirect to login page after successful logout
-        const basePath = getRedirectBasePath();
+        const isInSubfolder = window.location.pathname.includes('/admin/') || 
+                             window.location.pathname.includes('/pharmacy/') || 
+                             window.location.pathname.includes('/user-dashboard/') || 
+                             window.location.pathname.includes('/categories/') || 
+                             window.location.pathname.includes('/track/') || 
+                             window.location.pathname.includes('/cart/') || 
+                             window.location.pathname.includes('/addresses/') || 
+                             window.location.pathname.includes('/pay/') || 
+                             window.location.pathname.includes('/product/') || 
+                             window.location.pathname.includes('/disabled/');
+        const basePath = isInSubfolder ? "../" : "";
         window.location.href = `${basePath}login/`;
     }).catch((error) => {
-        console.error('Logout error:', error);
+        console.error('❌ Logout error:', error);
         // Still redirect even if there's an error
-        const basePath = getRedirectBasePath();
+        const isInSubfolder = window.location.pathname.includes('/admin/') || 
+                             window.location.pathname.includes('/pharmacy/') || 
+                             window.location.pathname.includes('/user-dashboard/') || 
+                             window.location.pathname.includes('/categories/') || 
+                             window.location.pathname.includes('/track/') || 
+                             window.location.pathname.includes('/cart/') || 
+                             window.location.pathname.includes('/addresses/') || 
+                             window.location.pathname.includes('/pay/') || 
+                             window.location.pathname.includes('/product/') || 
+                             window.location.pathname.includes('/disabled/');
+        const basePath = isInSubfolder ? "../" : "";
         window.location.href = `${basePath}login/`;
     });
 }

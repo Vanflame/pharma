@@ -49,23 +49,12 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
         import { firebaseConfig, showError, showSuccess, setButtonLoading } from '../js/firebase.js';
-        import { registerUser, redirectByRole } from '../js/auth.js';
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const persistedUid = localStorage.getItem('uid');
-        const persistedRole = localStorage.getItem('role');
-        if (persistedUid && persistedRole) {
-            redirectByRole(persistedRole);
-        }
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) return;
-            // Only redirect if role is already persisted (i.e., registration fully completed)
-            const role = localStorage.getItem('role');
-            if (role) redirectByRole(role);
-        });
+        import { registerUser } from '../js/auth.js';
+        import { authManager } from '../js/authManager.js';
+
+        // The auth manager will handle redirects automatically
+        console.log('📝 Register page: Auth manager will handle redirects');
         const form = document.getElementById('register-form');
         const err = document.getElementById('error');
         const submitBtn = form.querySelector('button[type="submit"]');
@@ -74,11 +63,20 @@
             e.preventDefault();
             err.classList.add('hidden');
             
+            // Prevent multiple submissions
+            if (submitBtn.disabled) {
+                console.log('⚠️ Register form: Already submitting, ignoring');
+                return;
+            }
+            
+            console.log('📝 Register form: Starting registration process');
+            
             // Set loading state
             setButtonLoading(submitBtn, true, 'Creating account...');
             
             const data = Object.fromEntries(new FormData(form).entries());
             try {
+                // Perform registration - authManager will handle redirects automatically
                 const user = await registerUser({
                     name: data.name,
                     email: data.email,
@@ -86,15 +84,16 @@
                     phone: data.phone,
                     role: data.role
                 });
-                // Registration success only after Firestore writes. Role is persisted in registerUser.
-                const role = localStorage.getItem('role') || data.role;
+                console.log('📝 Register form: Registration successful');
                 
-                // Show success state briefly before redirect
+                // Show success state - authManager will redirect automatically
                 setButtonLoading(submitBtn, true, 'Account created! Redirecting...');
-                await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
                 
-                redirectByRole(role);
+                // The authManager's onAuthStateChanged listener will handle the redirect
+                // No need to manually redirect here
+                
             } catch (error) {
+                console.error('❌ Register form: Registration failed:', error);
                 showError(error, 'error');
                 setButtonLoading(submitBtn, false);
             }

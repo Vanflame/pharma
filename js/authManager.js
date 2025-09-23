@@ -15,6 +15,8 @@ class AuthManager {
         this.redirected = false; // Prevent multiple redirects
         this.initialized = false; // Prevent multiple initializations
         this.lastRedirectTime = 0; // Track last redirect time
+        this.redirectCount = 0; // Track number of redirects to prevent infinite loops
+        this.maxRedirects = 3; // Maximum allowed redirects
         this.setupAuthListener();
         this.checkExistingAuth();
     }
@@ -149,8 +151,11 @@ class AuthManager {
                 localStorage.removeItem('role');
             }
             
-            // Mark as initialized after first run
-            this.initialized = true;
+        // Mark as initialized after first run
+        this.initialized = true;
+        
+        // Reset redirect count on successful page load
+        this.redirectCount = 0;
         });
     }
 
@@ -172,35 +177,34 @@ class AuthManager {
     performRedirect(role) {
         const now = Date.now();
         
-        // Prevent multiple redirects within 2 seconds
-        if (this.redirected && (now - this.lastRedirectTime) < 2000) {
+        // Check redirect count to prevent infinite loops
+        if (this.redirectCount >= this.maxRedirects) {
+            console.log('🔄 Maximum redirects reached, stopping to prevent infinite loop');
+            this.redirected = false;
+            this.redirectCount = 0;
+            return;
+        }
+        
+        // Prevent multiple redirects within 3 seconds (increased from 2)
+        if (this.redirected && (now - this.lastRedirectTime) < 3000) {
             console.log('🔄 Already redirected recently, ignoring');
             return;
         }
         
         this.redirected = true;
         this.lastRedirectTime = now;
+        this.redirectCount++;
         const currentPath = window.location.pathname;
-        console.log('🔄 Performing redirect with role:', role, 'from path:', currentPath);
+        const currentUrl = window.location.href;
+        console.log('🔄 Performing redirect with role:', role, 'from path:', currentPath, 'redirect count:', this.redirectCount);
+        console.log('🔄 Current URL:', currentUrl);
         
-        // Special case: if user is already on home page, don't redirect
-        if (role === 'user' && (currentPath === '/' || currentPath === '/index.html')) {
-            console.log('🔄 User already on home page, no redirect needed');
+        // Check if we're already on the correct page for the role
+        const isOnCorrectPage = this.isOnCorrectPageForRole(role, currentPath, currentUrl);
+        if (isOnCorrectPage) {
+            console.log('🔄 Already on correct page for role, no redirect needed');
             this.redirected = false; // Reset flag since we're not redirecting
-            return;
-        }
-        
-        // Special case: if admin is already on admin page, don't redirect
-        if (role === 'admin' && currentPath.includes('/admin/')) {
-            console.log('🔄 Admin already on admin page, no redirect needed');
-            this.redirected = false;
-            return;
-        }
-        
-        // Special case: if pharmacy is already on pharmacy page, don't redirect
-        if (role === 'pharmacy' && currentPath.includes('/pharmacy/')) {
-            console.log('🔄 Pharmacy already on pharmacy page, no redirect needed');
-            this.redirected = false;
+            this.redirectCount = 0; // Reset redirect count since we're on the right page
             return;
         }
         
@@ -220,32 +224,49 @@ class AuthManager {
             redirectUrl = `${basePath}pharmacy/`;
             console.log('💊 Redirecting pharmacy to:', redirectUrl);
         } else {
+            // For users, redirect to home page
             redirectUrl = basePath || "./";
             console.log('👤 Redirecting user to home page:', redirectUrl);
         }
         
         console.log('🔄 Final redirect URL:', redirectUrl);
         
-        // Perform the redirect immediately
-        console.log('🔄 Executing redirect immediately to:', redirectUrl);
-        
-        // Try immediate redirect first
-        try {
-            window.location.href = redirectUrl;
-        } catch (error) {
-            console.error('❌ Immediate redirect failed:', error);
-            // Fallback: try with timeout
-            setTimeout(() => {
-                console.log('🔄 Fallback redirect to:', redirectUrl);
-                try {
-                    window.location.replace(redirectUrl);
-                } catch (error2) {
-                    console.error('❌ Fallback redirect also failed:', error2);
-                    // Last resort: try location.assign
-                    window.location.assign(redirectUrl);
-                }
-            }, 100);
+        // Check if redirect URL is the same as current URL to prevent loops
+        if (redirectUrl === currentUrl || redirectUrl === window.location.origin + currentPath) {
+            console.log('🔄 Redirect URL same as current URL, preventing loop');
+            this.redirected = false;
+            return;
         }
+        
+        // Perform the redirect with a small delay to prevent rapid redirects
+        setTimeout(() => {
+            console.log('🔄 Executing redirect to:', redirectUrl);
+            try {
+                window.location.href = redirectUrl;
+            } catch (error) {
+                console.error('❌ Redirect failed:', error);
+            }
+        }, 100);
+    }
+    
+    // Helper method to check if user is already on the correct page for their role
+    isOnCorrectPageForRole(role, currentPath, currentUrl) {
+        if (role === 'user') {
+            // User should be on home page - check various home page patterns
+            return currentPath === '/' || 
+                   currentPath === '/index.html' || 
+                   currentPath.endsWith('/') ||
+                   currentUrl.includes('/pharma/') ||
+                   currentUrl.endsWith('/pharma/') ||
+                   currentUrl.endsWith('/pharma') ||
+                   currentUrl.endsWith('/') ||
+                   currentUrl.includes('index.html');
+        } else if (role === 'admin') {
+            return currentPath.includes('/admin/');
+        } else if (role === 'pharmacy') {
+            return currentPath.includes('/pharmacy/');
+        }
+        return false;
     }
 
     getCurrentUser() {
@@ -260,6 +281,7 @@ class AuthManager {
         this.currentUser = null;
         this.currentRole = null;
         this.redirected = false;
+        this.redirectCount = 0;
     }
 
     // Debug method - call this from console to test redirect

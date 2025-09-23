@@ -489,6 +489,10 @@
             
             // Set loading state
             setButtonLoading(submitBtn, true, 'Creating account...');
+            
+            // Set flag to prevent auth manager from redirecting during registration
+            window.registrationInProgress = true;
+            
             try {
                 
                 // Perform registration
@@ -500,10 +504,22 @@
                     role: data.role
                 });
                 
+                // Clear the registration flag
+                window.registrationInProgress = false;
+                
                 // Show success state
                 setButtonLoading(submitBtn, true, 'Account created! Redirecting...');
                 
+                // Manual redirect after successful registration
+                setTimeout(() => {
+                    console.log('🔄 Manual redirect after successful registration');
+                    window.location.href = '../';
+                }, 1000);
+                
             } catch (error) {
+                // Clear the registration flag on error
+                window.registrationInProgress = false;
+                
                 console.error('❌ Registration failed:', error);
                 console.error('❌ Error code:', error.code);
                 console.error('❌ Error message:', error.message);

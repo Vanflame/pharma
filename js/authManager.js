@@ -163,6 +163,12 @@ class AuthManager {
         const currentPath = window.location.pathname;
         console.log('🔄 Checking if should redirect from path:', currentPath);
         
+        // Don't redirect if we're in the middle of registration process
+        if (window.registrationInProgress) {
+            console.log('🔄 Registration in progress, skipping redirect');
+            return false;
+        }
+        
         // Redirect from login or register pages
         // Also redirect if we haven't initialized yet (first load)
         const shouldRedirect = 

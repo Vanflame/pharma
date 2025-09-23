@@ -1,6 +1,6 @@
 // Clean Authentication Manager - Simple and Reliable
 import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { firebaseConfig, COLLECTIONS } from "./firebase.js";
 
@@ -27,14 +27,45 @@ class AuthManager {
         console.log('🔐 Checking existing auth - User:', currentUser?.email || 'None', 'Cached role:', cachedRole);
         
         if (currentUser && cachedRole) {
-            console.log('🔐 User already authenticated, checking if redirect needed');
+            console.log('🔐 User already authenticated, checking if account is disabled');
             this.currentUser = currentUser;
             this.currentRole = cachedRole;
+            
+            // Check if account is disabled
+            try {
+                const userDoc = await getDoc(doc(db, COLLECTIONS.users, currentUser.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    
+                    if (userData.disabled === true) {
+                        console.log('🚫 Account is disabled during existing auth check, redirecting to disabled page');
+                        await signOut(auth);
+                        localStorage.removeItem('uid');
+                        localStorage.removeItem('role');
+                        this.currentUser = null;
+                        this.currentRole = null;
+                        // Redirect to disabled page
+                        window.location.href = '../disabled/';
+                        return;
+                    }
+                    
+                    // Update role from Firestore if different from cached
+                    if (userData.role !== cachedRole) {
+                        console.log('🔐 Role changed in Firestore, updating from', cachedRole, 'to', userData.role);
+                        this.currentRole = userData.role;
+                        localStorage.setItem('role', userData.role);
+                    }
+                } else {
+                    console.warn('⚠️ User document not found during existing auth check');
+                }
+            } catch (error) {
+                console.error('❌ Error checking user status during existing auth check:', error);
+            }
             
             // Check if we're on a page that should redirect
             if (this.shouldRedirect()) {
                 console.log('🔐 Already authenticated user on redirect page, redirecting now');
-                this.performRedirect(cachedRole);
+                this.performRedirect(this.currentRole);
             } else {
                 console.log('🔐 User already authenticated and on appropriate page, staying here');
             }
@@ -60,6 +91,20 @@ class AuthManager {
                     const userDoc = await getDoc(doc(db, COLLECTIONS.users, user.uid));
                     if (userDoc.exists()) {
                         const userData = userDoc.data();
+                        
+                        // Check if account is disabled
+                        if (userData.disabled === true) {
+                            console.log('🚫 Account is disabled, redirecting to disabled page');
+                            await signOut(auth);
+                            localStorage.removeItem('uid');
+                            localStorage.removeItem('role');
+                            this.currentUser = null;
+                            this.currentRole = null;
+                            // Redirect to disabled page
+                            window.location.href = '../disabled/';
+                            return;
+                        }
+                        
                         this.currentRole = userData.role || 'user';
                         console.log('🔐 User role from Firestore:', this.currentRole);
                         
@@ -256,6 +301,30 @@ class AuthManager {
         this.redirected = false;
         this.lastRedirectTime = 0;
         console.log('🔄 Redirect state reset');
+    }
+    
+    showDisabledAccountError() {
+        // Create a professional error modal
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+        modal.innerHTML = `
+            <div class="bg-white rounded-xl p-6 max-w-md w-full text-center shadow-2xl">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Account Disabled</h3>
+                <p class="text-gray-600 mb-6">Your account has been disabled by an administrator. Please contact support for assistance.</p>
+                <button onclick="this.closest('.fixed').remove()" 
+                        class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors">
+                    OK
+                </button>
+            </div>
+        `;
+        document.body.appendChild(modal);
     }
 }
 

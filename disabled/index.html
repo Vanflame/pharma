@@ -6,13 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account Disabled — PHARMA DIRECT</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
-<body class="min-h-screen bg-gray-50 grid place-items-center px-4">
-    <div class="max-w-md bg-white rounded-2xl p-6 shadow text-center">
-        <h1 class="text-2xl font-semibold">Account Disabled</h1>
-        <p class="mt-2 text-gray-600">Your account is disabled. Please contact customer support to resolve this.</p>
-        <a href="../" class="mt-4 inline-flex rounded-lg bg-emerald-600 text-white px-4 py-2">Back to Home</a>
+<body class="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 grid place-items-center px-4">
+    <div class="max-w-lg bg-white rounded-2xl p-8 shadow-xl text-center">
+        <!-- Warning Icon -->
+        <div class="flex justify-center mb-6">
+            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
+                <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Account Disabled</h1>
+        
+        <!-- Description -->
+        <p class="text-gray-600 mb-6 leading-relaxed">
+            Your account has been temporarily disabled by an administrator. This may be due to a policy violation, security concern, or account review.
+        </p>
+        
+        <!-- Additional Info -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+            <h3 class="font-semibold text-gray-900 mb-2">What you can do:</h3>
+            <ul class="text-sm text-gray-600 space-y-1">
+                <li>• Contact our support team for assistance</li>
+                <li>• Review our terms of service</li>
+                <li>• Wait for account review completion</li>
+            </ul>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="bg-emerald-50 rounded-lg p-4 mb-6">
+            <h3 class="font-semibold text-emerald-900 mb-2">Need Help?</h3>
+            <p class="text-sm text-emerald-700">
+                Contact our support team at <strong>support@pharmadirect.com</strong><br>
+                or call <strong>+1 (555) 123-4567</strong>
+            </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="space-y-3">
+            <a href="../" class="w-full inline-flex justify-center items-center rounded-lg bg-emerald-600 text-white px-6 py-3 font-medium hover:bg-emerald-700 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                Back to Home
+            </a>
+            
+            <a href="mailto:support@pharmadirect.com" class="w-full inline-flex justify-center items-center rounded-lg border border-gray-300 text-gray-700 px-6 py-3 font-medium hover:bg-gray-50 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                Contact Support
+            </a>
+        </div>
     </div>
 </body>
 

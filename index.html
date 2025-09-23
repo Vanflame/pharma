@@ -958,11 +958,44 @@
             }
         }
         
+        // Function to check if user account is disabled
+        async function checkAccountStatus(user) {
+            if (!user) return false;
+            
+            try {
+                const { getDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
+                const { COLLECTIONS } = await import("./js/firebase.js");
+                
+                const userDoc = await getDoc(doc(db, COLLECTIONS.users, user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    if (userData.disabled === true) {
+                        console.log('🚫 Account is disabled, redirecting to disabled page');
+                        const { signOut } = await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js");
+                        await signOut(auth);
+                        localStorage.removeItem('uid');
+                        localStorage.removeItem('role');
+                        window.location.href = './disabled/';
+                        return true; // Account is disabled
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error checking account status:', error);
+            }
+            return false; // Account is not disabled
+        }
+
         // Listen for auth state changes and update UI
         onAuthStateChanged(auth, async (user) => {
             console.log('🏠 Home page: Auth state changed - User:', user?.email || 'No user');
             
             if (user) {
+                // Check if account is disabled
+                const isDisabled = await checkAccountStatus(user);
+                if (isDisabled) {
+                    return; // Will redirect to disabled page
+                }
+                
                 // Get user role
                 const role = localStorage.getItem('role') || 'user';
                 console.log('🏠 Home page: User role:', role);
@@ -1005,6 +1038,15 @@
                 updateAuthUI(currentUser, role);
             }
         }, 1000);
+        
+        // Periodic check for disabled accounts (every 30 seconds)
+        setInterval(async () => {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                console.log('🔄 Periodic check: Checking account status for', currentUser.email);
+                await checkAccountStatus(currentUser);
+            }
+        }, 30000); // Check every 30 seconds
         
         // Manual function to force update UI (for debugging)
         window.forceUpdateUI = function() {

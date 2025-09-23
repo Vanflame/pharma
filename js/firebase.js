@@ -122,7 +122,8 @@ export function getProfessionalErrorMessage(error) {
                 return 'Please enter a valid email address.';
             
             case 'auth/user-disabled':
-                return 'This account has been disabled. Please contact support for assistance.';
+            case 'auth/account-disabled':
+                return 'Your account has been disabled by an administrator. Please contact support for assistance.';
             
             case 'auth/too-many-requests':
                 return 'Too many failed attempts. Please wait a moment before trying again.';

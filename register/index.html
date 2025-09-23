@@ -7,6 +7,37 @@
     <title>Register — PHARMA DIRECT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+        /* Disable browser default validation tooltips */
+        input:invalid, select:invalid {
+            box-shadow: none !important;
+        }
+        
+        input:invalid:focus, select:invalid:focus {
+            box-shadow: none !important;
+        }
+        
+        /* Custom validation styling */
+        .error-state {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 1px #ef4444 !important;
+        }
+        
+        .error-state:focus {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 1px #ef4444 !important;
+        }
+        
+        /* Smooth transitions for all form elements */
+        input, select {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        /* Custom dropdown arrow */
+        select {
+            background-image: none;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50">
@@ -20,54 +51,147 @@
             <form id="register-form" class="mt-8 space-y-6">
                 <div>
                     <label class="text-sm font-medium text-gray-700">Full name</label>
-                    <input name="name" required 
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="Enter your full name" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                        <input name="name" required 
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="Enter your full name" />
+                        <div class="error-icon absolute inset-y-0 right-0 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <div>
                     <label class="text-sm font-medium text-gray-700">Email</label>
-                    <input name="email" type="email" required 
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="Enter your email address" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                        <input name="email" type="email" required 
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="Enter your email address" />
+                        <div class="error-icon absolute inset-y-0 right-0 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <div>
                     <label class="text-sm font-medium text-gray-700">Phone Number</label>
-                    <input name="phone" type="tel" required 
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="09XXXXXXXXX" 
-                           pattern="^09[0-9]{9}$" 
-                           maxlength="11" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                        <input name="phone" type="tel" required 
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="09XXXXXXXXX" 
+                               pattern="^09[0-9]{9}$" 
+                               maxlength="11" />
+                        <div class="error-icon absolute inset-y-0 right-0 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                     <div class="text-xs text-gray-500 mt-1">Must start with 09 and be 11 digits total</div>
                 </div>
                 
                 <div>
                     <label class="text-sm font-medium text-gray-700">Password</label>
-                    <input name="password" type="password" minlength="6" required 
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="Create a password (min 6 characters)" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                    <input name="password" type="password" minlength="6" required
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="Create a password (min 6 characters)" />
+                        <button type="button" onclick="togglePassword('password')" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                                aria-label="Toggle password visibility">
+                            <svg id="password-eye" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                        <div class="error-icon absolute inset-y-0 right-8 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <div>
                     <label class="text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input name="confirmPassword" type="password" required 
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="Confirm your password" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                        <input name="confirmPassword" type="password" required 
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="Confirm your password" />
+                        <button type="button" onclick="togglePassword('confirmPassword')" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                                aria-label="Toggle confirm password visibility">
+                            <svg id="confirmPassword-eye" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                        <div class="error-icon absolute inset-y-0 right-8 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <div>
                     <label class="text-sm font-medium text-gray-700">Account Type</label>
-                    <select name="role" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        <option value="user">Regular User</option>
-                        <option value="pharmacy">Pharmacy Owner</option>
+                    <div class="relative mt-1">
+                        <select name="role" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200 appearance-none bg-white">
+                            <option value="user">Regular User</option>
+                            <option value="pharmacy">Pharmacy Owner</option>
                     </select>
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="error-icon absolute inset-y-0 right-8 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-3 font-medium hover:bg-emerald-700 transition-colors focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
@@ -92,90 +216,282 @@
 
         // The auth manager will handle redirects automatically
         console.log('📝 Register page: Auth manager will handle redirects');
+        
+        // Test Firestore connection and try to read existing data
+        console.log('📝 Register page: Testing Firestore connection...');
+        try {
+            const { getFirestore, doc, setDoc, getDoc, collection, getDocs } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js');
+            const { initializeApp, getApp, getApps } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js');
+            const { firebaseConfig, COLLECTIONS } = await import('../js/firebase.js');
+            
+            const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            console.log('📝 Register page: Firestore initialized successfully');
+            console.log('📝 Register page: Collections config:', COLLECTIONS);
+            
+            // Skip read test for now - focus on write permissions
+            console.log('📝 Register page: Skipping read test, will test write permissions during registration...');
+            
+        } catch (error) {
+            console.error('❌ Register page: Firestore initialization failed:', error);
+        }
         const form = document.getElementById('register-form');
         const err = document.getElementById('error');
+        
+        if (!form) {
+            console.error('❌ Form element not found!');
+        } else {
+        
         const submitBtn = form.querySelector('button[type="submit"]');
         
-        // Validation functions
-        function validateForm(data) {
-            const errors = {};
+        
+        
+        // Password toggle function - make it globally accessible
+        window.togglePassword = function(fieldName) {
+            const passwordField = document.querySelector(`[name="${fieldName}"]`);
+            const eyeIcon = document.getElementById(`${fieldName}-eye`);
             
-            // Clear previous errors
-            document.querySelectorAll('.error-message').forEach(el => {
-                el.classList.add('hidden');
-                el.textContent = '';
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                `;
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        }
+        
+        // Simple validation function
+        function showFieldError(fieldName, message) {
+            const input = form.querySelector(`[name="${fieldName}"]`);
+            const errorElement = input.parentNode.parentNode.querySelector('.error-message');
+            const errorIcon = input.parentNode.querySelector('.error-icon');
+            
+            // Show error message
+            if (errorElement) {
+                const span = errorElement.querySelector('span');
+                if (span) {
+                    span.textContent = message;
+                }
+                errorElement.classList.remove('hidden');
+            }
+            
+            // Show error icon
+            if (errorIcon) {
+                errorIcon.classList.remove('hidden');
+            }
+            
+            // Add red border
+            input.classList.remove('border-gray-300');
+            input.classList.add('border-red-500', 'ring-1', 'ring-red-500', 'error-state');
+        }
+        
+        function clearFieldError(fieldName) {
+            const input = form.querySelector(`[name="${fieldName}"]`);
+            const errorElement = input.parentNode.parentNode.querySelector('.error-message');
+            const errorIcon = input.parentNode.querySelector('.error-icon');
+            
+            // Hide error message
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+            }
+            
+            // Hide error icon
+            if (errorIcon) {
+                errorIcon.classList.add('hidden');
+            }
+            
+            // Remove red border
+            input.classList.remove('border-red-500', 'ring-red-500', 'error-state');
+            input.classList.add('border-gray-300');
+        }
+        
+        function clearAllErrors() {
+            const fields = ['name', 'email', 'phone', 'password', 'confirmPassword', 'role'];
+            fields.forEach(fieldName => {
+                clearFieldError(fieldName);
             });
+        }
+        
+        
+        
+        // Function to run validation
+        function runValidation() {
+            clearAllErrors();
+            
+            const data = Object.fromEntries(new FormData(form).entries());
+            let hasErrors = false;
+            
+            // Check each required field
+            if (!data.name || data.name.trim() === '') {
+                showFieldError('name', 'Name is required');
+                hasErrors = true;
+            }
+            
+            if (!data.email || data.email.trim() === '') {
+                showFieldError('email', 'Email is required');
+                hasErrors = true;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+                showFieldError('email', 'Please enter a valid email address');
+                hasErrors = true;
+            }
+            
+            if (!data.phone || data.phone.trim() === '') {
+                showFieldError('phone', 'Phone number is required');
+                hasErrors = true;
+            } else if (!/^09[0-9]{9}$/.test(data.phone)) {
+                showFieldError('phone', 'Phone must start with 09 and be 11 digits total');
+                hasErrors = true;
+            }
+            
+            if (!data.password || data.password === '') {
+                showFieldError('password', 'Password is required');
+                hasErrors = true;
+            } else if (data.password.length < 6) {
+                showFieldError('password', 'Password must be at least 6 characters long');
+                hasErrors = true;
+            }
+            
+            if (!data.confirmPassword || data.confirmPassword === '') {
+                showFieldError('confirmPassword', 'Please confirm your password');
+                hasErrors = true;
+            } else if (data.password !== data.confirmPassword) {
+                showFieldError('confirmPassword', 'Passwords do not match');
+                hasErrors = true;
+            }
+            
+            if (!data.role || data.role === '') {
+                showFieldError('role', 'Please select an account type');
+                hasErrors = true;
+            }
+            
+            return !hasErrors; // Return true if no errors
+        }
+        
+        // Real-time validation as user types
+        form.addEventListener('input', function(e) {
+            if (e.target.matches('input, select')) {
+                const fieldName = e.target.name;
+                const fieldValue = e.target.value;
+                
+                // Clear previous error for this field
+                clearFieldError(fieldName);
+                
+                // Validate specific field in real-time
+                if (fieldName === 'name') {
+                    if (fieldValue.trim().length > 0 && fieldValue.trim().length < 2) {
+                        showFieldError('name', 'Name must be at least 2 characters long');
+                    }
+                } else if (fieldName === 'email') {
+                    if (fieldValue.trim().length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {
+                        showFieldError('email', 'Please enter a valid email address');
+                    }
+                } else if (fieldName === 'phone') {
+                    if (fieldValue.trim().length > 0 && !/^09[0-9]{9}$/.test(fieldValue)) {
+                        showFieldError('phone', 'Phone must start with 09 and be 11 digits total');
+                    }
+                } else if (fieldName === 'password') {
+                    if (fieldValue.length > 0 && fieldValue.length < 6) {
+                        showFieldError('password', 'Password must be at least 6 characters long');
+                    }
+                } else if (fieldName === 'confirmPassword') {
+                    const password = form.querySelector('[name="password"]').value;
+                    if (fieldValue.length > 0 && fieldValue !== password) {
+                        showFieldError('confirmPassword', 'Passwords do not match');
+                    }
+                }
+            }
+        });
+        
+        // Prevent browser default validation
+        form.addEventListener('invalid', (e) => {
+            e.preventDefault();
+        }, true);
+        
+        // Main registration function
+        async function handleRegistration() {
+            err.classList.add('hidden');
+            
+            if (submitBtn.disabled) {
+                return;
+            }
+            
+            // Clear all previous errors first
+            clearAllErrors();
+            
+            // Get form data
+            const data = Object.fromEntries(new FormData(form).entries());
+            console.log('📝 Form data:', data);
+            
+            // Comprehensive validation
+            let hasErrors = false;
             
             // Name validation
-            if (!data.name || data.name.trim().length < 2) {
-                errors.name = 'Name must be at least 2 characters long';
+            if (!data.name || data.name.trim() === '') {
+                showFieldError('name', 'Name is required');
+                hasErrors = true;
+            } else if (data.name.trim().length < 2) {
+                showFieldError('name', 'Name must be at least 2 characters long');
+                hasErrors = true;
             }
             
             // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!data.email || !emailRegex.test(data.email)) {
-                errors.email = 'Please enter a valid email address';
+            if (!data.email || data.email.trim() === '') {
+                showFieldError('email', 'Email is required');
+                hasErrors = true;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+                showFieldError('email', 'Please enter a valid email address');
+                hasErrors = true;
             }
             
             // Phone validation
-            const phoneRegex = /^09[0-9]{9}$/;
-            if (!data.phone || !phoneRegex.test(data.phone)) {
-                errors.phone = 'Phone must start with 09 and be 11 digits total';
+            if (!data.phone || data.phone.trim() === '') {
+                showFieldError('phone', 'Phone number is required');
+                hasErrors = true;
+            } else if (!/^09[0-9]{9}$/.test(data.phone)) {
+                showFieldError('phone', 'Phone must start with 09 and be 11 digits total');
+                hasErrors = true;
             }
             
             // Password validation
-            if (!data.password || data.password.length < 6) {
-                errors.password = 'Password must be at least 6 characters long';
+            if (!data.password || data.password === '') {
+                showFieldError('password', 'Password is required');
+                hasErrors = true;
+            } else if (data.password.length < 6) {
+                showFieldError('password', 'Password must be at least 6 characters long');
+                hasErrors = true;
             }
             
             // Confirm password validation
-            if (!data.confirmPassword) {
-                errors.confirmPassword = 'Please confirm your password';
+            if (!data.confirmPassword || data.confirmPassword === '') {
+                showFieldError('confirmPassword', 'Please confirm your password');
+                hasErrors = true;
             } else if (data.password !== data.confirmPassword) {
-                errors.confirmPassword = 'Passwords do not match';
+                showFieldError('confirmPassword', 'Passwords do not match');
+                hasErrors = true;
             }
             
             // Role validation
-            if (!data.role) {
-                errors.role = 'Please select an account type';
+            if (!data.role || data.role === '') {
+                showFieldError('role', 'Please select an account type');
+                hasErrors = true;
             }
             
-            // Display errors
-            Object.keys(errors).forEach(field => {
-                const errorElement = form.querySelector(`[name="${field}"]`).parentNode.querySelector('.error-message');
-                if (errorElement) {
-                    errorElement.textContent = errors[field];
-                    errorElement.classList.remove('hidden');
-                }
-            });
-            
-            return Object.keys(errors).length === 0;
-        }
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            err.classList.add('hidden');
-            
-            // Prevent multiple submissions
-            if (submitBtn.disabled) {
-                console.log('⚠️ Register form: Already submitting, ignoring');
+            if (hasErrors) {
                 return;
             }
             
-            console.log('📝 Register form: Starting registration process');
-            
-            const data = Object.fromEntries(new FormData(form).entries());
-            
-            // Validate form
-            if (!validateForm(data)) {
-                console.log('❌ Register form: Validation failed');
-                return;
-            }
+            console.log('✅ Validation passed, proceeding with registration...');
             
             // Set loading state
             setButtonLoading(submitBtn, true, 'Creating account...');
             try {
-                // Perform registration - authManager will handle redirects automatically
+                
+                // Perform registration
                 const user = await registerUser({
                     name: data.name,
                     email: data.email,
@@ -183,20 +499,52 @@
                     phone: data.phone,
                     role: data.role
                 });
-                console.log('📝 Register form: Registration successful');
                 
-                // Show success state - authManager will redirect automatically
+                // Show success state
                 setButtonLoading(submitBtn, true, 'Account created! Redirecting...');
                 
-                // The authManager's onAuthStateChanged listener will handle the redirect
-                // No need to manually redirect here
-                
             } catch (error) {
-                console.error('❌ Register form: Registration failed:', error);
-                showError(error, 'error');
+                console.error('❌ Registration failed:', error);
+                console.error('❌ Error code:', error.code);
+                console.error('❌ Error message:', error.message);
+                
+                // Show specific error message
+                let errorMessage = 'Registration failed. Please try again.';
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Permission denied. Please check your account permissions.';
+                } else if (error.code === 'unavailable') {
+                    errorMessage = 'Service temporarily unavailable. Please try again in a few moments.';
+                } else if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'An account with this email already exists. Please use a different email or try logging in.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'Password is too weak. Please choose a stronger password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Please enter a valid email address.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage = 'Network error. Please check your internet connection and try again.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many attempts. Please try again later.';
+                }
+                
+                // Show error message directly in the error div
+                err.textContent = errorMessage;
+                err.classList.remove('hidden');
                 setButtonLoading(submitBtn, false);
             }
+        }
+        
+        // Form submission event
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleRegistration();
         });
+        
+        // Button click event (backup)
+        submitBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await handleRegistration();
+        });
+        } // Close the else block
     </script>
 </body>
 

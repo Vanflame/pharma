@@ -7,6 +7,32 @@
     <title>Login — PHARMA DIRECT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+        /* Disable browser default validation tooltips */
+        input:invalid {
+            box-shadow: none !important;
+        }
+        
+        input:invalid:focus {
+            box-shadow: none !important;
+        }
+        
+        /* Custom validation styling */
+        .error-state {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 1px #ef4444 !important;
+        }
+        
+        .error-state:focus {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 1px #ef4444 !important;
+        }
+        
+        /* Smooth transitions for all form elements */
+        input {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50">
@@ -21,18 +47,50 @@
             <form id="login-form" class="mt-8 space-y-6">
                 <div>
                     <label class="text-sm font-medium text-gray-700">Email Address</label>
-                    <input name="email" type="email" required 
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="Enter your email address" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                        <input name="email" type="email" required 
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="Enter your email address" />
+                        <div class="error-icon absolute inset-y-0 right-0 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <div>
                     <label class="text-sm font-medium text-gray-700">Password</label>
-                    <input name="password" type="password" required minlength="6"
-                           class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors" 
-                           placeholder="Enter your password" />
-                    <div class="error-message text-xs text-red-500 mt-1 hidden"></div>
+                    <div class="relative mt-1">
+                        <input name="password" type="password" required minlength="6"
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-200" 
+                               placeholder="Enter your password" />
+                        <button type="button" onclick="togglePassword('password')" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                                aria-label="Toggle password visibility">
+                            <svg id="password-eye" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                        <div class="error-icon absolute inset-y-0 right-8 pr-3 flex items-center hidden">
+                            <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-3 font-medium hover:bg-emerald-700 transition-colors focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
@@ -67,14 +125,47 @@
         console.log('Form found:', form);
         console.log('Submit button found:', submitBtn);
         
+        // Password toggle function - make it globally accessible
+        window.togglePassword = function(fieldName) {
+            const passwordField = document.querySelector(`[name="${fieldName}"]`);
+            const eyeIcon = document.getElementById(`${fieldName}-eye`);
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                `;
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        }
+        
         // Validation functions
         function validateLoginForm(data) {
             const errors = {};
             
-            // Clear previous errors
+            // Clear previous errors and reset styling
             document.querySelectorAll('.error-message').forEach(el => {
                 el.classList.add('hidden');
-                el.textContent = '';
+                const span = el.querySelector('span');
+                if (span) {
+                    span.textContent = '';
+                }
+            });
+            
+            document.querySelectorAll('.error-icon').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('border-red-500', 'ring-red-500', 'error-state');
+                input.classList.add('border-gray-300');
+                // Remove any custom validation attributes
+                input.setCustomValidity('');
             });
             
             // Email validation
@@ -88,17 +179,38 @@
                 errors.password = 'Password must be at least 6 characters long';
             }
             
-            // Display errors
+            // Display errors with visual styling
             Object.keys(errors).forEach(field => {
-                const errorElement = form.querySelector(`[name="${field}"]`).parentNode.querySelector('.error-message');
+                const input = form.querySelector(`[name="${field}"]`);
+                const errorElement = input.parentNode.querySelector('.error-message');
+                const errorIcon = input.parentNode.querySelector('.error-icon');
+                
                 if (errorElement) {
-                    errorElement.textContent = errors[field];
+                    const span = errorElement.querySelector('span');
+                    if (span) {
+                        span.textContent = errors[field];
+                    }
                     errorElement.classList.remove('hidden');
                 }
+                
+                if (errorIcon) {
+                    errorIcon.classList.remove('hidden');
+                }
+                
+                // Add error styling to input
+                input.classList.remove('border-gray-300');
+                input.classList.add('border-red-500', 'ring-1', 'ring-red-500', 'error-state');
+                // Set custom validity to prevent browser tooltip
+                input.setCustomValidity(errors[field]);
             });
             
             return Object.keys(errors).length === 0;
         }
+        
+        // Prevent browser default validation
+        form.addEventListener('invalid', (e) => {
+            e.preventDefault();
+        }, true);
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -145,10 +257,46 @@
                 
             } catch (error) {
                 console.error('❌ Login form: Login failed:', error);
+                console.error('❌ Login form: Error code:', error.code);
+                console.error('❌ Login form: Error message:', error.message);
+                
+                // Check if it's a disabled account error (shouldn't happen now since we redirect)
+                if (error.code === 'auth/account-disabled') {
+                    console.log('🚫 Login form: Disabled account error caught - this should not happen');
+                    // Redirect to disabled page as fallback
+                    window.location.href = '../disabled/';
+                    return;
+                }
+                
                 showError(error, 'error');
                 setButtonLoading(submitBtn, false);
             }
         });
+        
+        // Test function to check if disabled account detection works
+        window.testDisabledAccount = async function() {
+            try {
+                console.log('🧪 Testing disabled account detection...');
+                const { getAuth } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js');
+                const { initializeApp, getApp, getApps } = await import('https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js');
+                const { firebaseConfig } = await import('../js/firebase.js');
+                
+                const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                
+                if (auth.currentUser) {
+                    console.log('🧪 Current user UID:', auth.currentUser.uid);
+                    const { fetchUserDoc } = await import('../js/auth.js');
+                    const userDoc = await fetchUserDoc(auth.currentUser.uid);
+                    console.log('🧪 User document:', userDoc);
+                    console.log('🧪 Is disabled:', userDoc?.disabled);
+                } else {
+                    console.log('🧪 No user currently logged in');
+                }
+            } catch (error) {
+                console.error('❌ Test failed:', error);
+            }
+        };
     </script>
 </body>
 
